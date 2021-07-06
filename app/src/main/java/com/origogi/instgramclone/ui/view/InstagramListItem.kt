@@ -31,6 +31,19 @@ fun InstagramListItem(post: Story) {
         ProfileInfoSection(post)
         InstagramImage(imageId = post.storyImageId)
         InstagramIconSection()
+        InstagramLikeSection(post = post)
+        Text(
+            text = "View all ${post.commentsCount} comments",
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 8.dp, top = 8.dp),
+            color = Color.Gray
+        )
+        Text(
+            text = "${post.time} ago",
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 8.dp, top = 2.dp, bottom = 8.dp),
+            color = Color.Gray
+        )
     }
 }
 
@@ -69,7 +82,7 @@ private fun InstagramIconSection() {
 
         }
         IconToggleButton(false,
-            onCheckedChange = {  }) {
+            onCheckedChange = { }) {
 
             val icon = Icons.Filled.Send
             val tint = MaterialTheme.colors.onSurface
@@ -111,6 +124,28 @@ fun ProfileInfoSection(post: Story) {
         )
     }
 
+}
+
+@Composable
+fun InstagramLikeSection(post: Story) {
+    Row(
+        modifier = Modifier
+            .padding(start = 8.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(id = post.authorImageId),
+            contentDescription = null,
+            modifier = Modifier
+                .size(20.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop
+        )
+        Text(text = "Liked by ${post.author} and ${post.likesCount} others",
+            style =MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 8.dp))
+    }
 }
 
 @Preview
