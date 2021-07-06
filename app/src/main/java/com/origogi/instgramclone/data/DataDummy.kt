@@ -61,7 +61,7 @@ object DataDummy {
             author = "Netflix",
             handle = "@Netflix",
             authorImageId = R.drawable.p2,
-            storyImageId = R.drawable.p2,
+            storyImageId = R.drawable.s2,
             time = "11m"
         ),
         story.copy(
