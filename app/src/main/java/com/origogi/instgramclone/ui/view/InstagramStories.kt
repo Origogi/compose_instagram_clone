@@ -2,8 +2,10 @@ package com.origogi.instgramclone.ui.view
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement.Absolute.Center
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -24,6 +26,9 @@ import com.origogi.instgramclone.data.DataDummy
 import com.origogi.instgramclone.data.Story
 import com.origogi.instgramclone.ui.theme.instagramGradient
 import androidx.compose.material.MaterialTheme.typography
+import androidx.compose.material.Surface
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -46,9 +51,9 @@ fun InstagramStories() {
 fun StoryListItem(
     post: Story, modifier: Modifier = Modifier
         .padding(start = 8.dp, end = 8.dp, top = 8.dp)
-        .height(60.dp)
-        .width(60.dp)
+        .size(70.dp)
         .clip(CircleShape)
+
 ) {
 
     val imageModifier =
@@ -57,12 +62,13 @@ fun StoryListItem(
                 .border(
                     shape = CircleShape,
                     border = BorderStroke(
-                        width = 3.dp,
-                        color = Color.LightGray
+                        width = 2.dp,
+                        color = MaterialTheme.colors.background
                     )
                 )
         } else {
             modifier
+
                 .border(
                     shape = CircleShape,
                     border = BorderStroke(
@@ -80,15 +86,38 @@ fun StoryListItem(
                         )
                     )
                 )
+
         }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(
-            painter = painterResource(id = post.authorImageId),
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
+        Box(
             modifier = imageModifier
-        )
+        ) {
+            Box(
+
+                modifier = Modifier
+                    .padding(6.dp)
+                    .background(color = MaterialTheme.colors.background, shape = CircleShape)
+                    .clip(CircleShape)
+                    .border(
+                        shape = CircleShape,
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = Color.LightGray
+                        )
+                    )
+
+            ) {
+                Image(
+                    painter = painterResource(id = post.authorImageId),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+
+
         Text(text = post.author, style = typography.caption, textAlign = TextAlign.Center)
     }
 
@@ -96,8 +125,16 @@ fun StoryListItem(
 
 @Preview
 @Composable
+fun StoryListItemPreview() {
+    StoryListItem(
+        DataDummy.storyList[0]
+    )
+}
+
+
+@Preview
+@Composable
 fun InstagramStoriesPreview() {
-    MaterialTheme {
-        InstagramStories()
-    }
+    InstagramStories()
+
 }
