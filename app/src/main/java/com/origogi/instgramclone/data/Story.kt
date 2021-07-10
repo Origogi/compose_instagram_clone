@@ -11,5 +11,6 @@ data class Story(
     val commentsCount: Int,
     val retweetCount: Int,
     val source: String,
-    val storyImageId: Int = 0
+    val storyImageId: Int = 0,
+    var isLiked: Boolean = false
 )

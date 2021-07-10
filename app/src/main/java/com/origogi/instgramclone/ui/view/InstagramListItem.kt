@@ -35,7 +35,7 @@ fun InstagramListItem(post: Story) {
     Column() {
         ProfileInfoSection(post)
         InstagramImage(imageId = post.storyImageId)
-        InstagramIconSection()
+        InstagramIconSection(post)
         InstagramLikeSection(post = post)
         Text(
             text = "View all ${post.commentsCount} comments",
@@ -67,12 +67,15 @@ fun InstagramImage(imageId: Int) {
 }
 
 @Composable
-private fun InstagramIconSection() {
+private fun InstagramIconSection(post: Story) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Row {
-            var fav by remember { mutableStateOf(false) }
+            var fav by remember { mutableStateOf(post.isLiked) }
             IconToggleButton(checked = fav,
-                onCheckedChange = { fav = it }) {
+                onCheckedChange = {
+                    fav = it
+                    post.isLiked = it
+                }) {
 
                 val icon =
                     if (fav) ImageBitmap.imageResource(R.drawable.ic_filled_favorite) else ImageBitmap.imageResource(
