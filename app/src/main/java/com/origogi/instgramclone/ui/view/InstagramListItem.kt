@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import com.origogi.instgramclone.R
+import com.origogi.instgramclone.ui.components.AnimatedToggleButton
 
 @Composable
 fun InstagramListItem(post: Story) {
@@ -68,10 +69,14 @@ fun InstagramImage(imageId: Int) {
 
 @Composable
 private fun InstagramIconSection(post: Story) {
+    var bookmark by remember { mutableStateOf(false) }
+    var fav by remember { mutableStateOf(post.isLiked) }
+
+
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Row {
-            var fav by remember { mutableStateOf(post.isLiked) }
-            IconToggleButton(checked = fav,
+
+            AnimatedToggleButton(isChecked = fav,
                 onCheckedChange = {
                     fav = it
                     post.isLiked = it
@@ -102,10 +107,14 @@ private fun InstagramIconSection(post: Story) {
 
             }
         }
-        IconToggleButton(false,
-            onCheckedChange = { }) {
+        AnimatedToggleButton(bookmark,
+            onCheckedChange  = {
+                bookmark= it
+            }) {
 
-            val icon = ImageVector.vectorResource(R.drawable.ic_outlined_bookmark)
+            val icon =
+                ImageVector.vectorResource(if (bookmark) R.drawable.ic_filled_bookmark else R.drawable.ic_outlined_bookmark)
+
             val tint = MaterialTheme.colors.onSurface
             Icon(icon, contentDescription = "", tint = tint)
 

@@ -15,7 +15,6 @@ import com.origogi.instgramclone.ui.view.InstagramHome
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        window.decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         setContent {
             InstagramHome()
         }
