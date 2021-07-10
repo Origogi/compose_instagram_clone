@@ -24,6 +24,9 @@ import com.origogi.instgramclone.data.DataDummy
 import com.origogi.instgramclone.data.Story
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
+import com.origogi.instgramclone.R
 
 @Composable
 fun InstagramListItem(post: Story) {
@@ -76,7 +79,7 @@ private fun InstagramIconSection() {
         IconToggleButton(checked = false,
             onCheckedChange = { }) {
 
-            val icon = Icons.Default.ChatBubbleOutline
+            val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_comment)
             val tint = MaterialTheme.colors.onSurface
             Icon(icon, contentDescription = "", tint = tint)
 
@@ -84,7 +87,7 @@ private fun InstagramIconSection() {
         IconToggleButton(false,
             onCheckedChange = { }) {
 
-            val icon = Icons.Filled.Send
+            val icon = ImageBitmap.imageResource(R.drawable.ic_dm)
             val tint = MaterialTheme.colors.onSurface
             Icon(icon, contentDescription = "", tint = tint)
 
