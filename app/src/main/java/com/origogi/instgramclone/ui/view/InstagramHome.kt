@@ -60,7 +60,8 @@ fun Appbar(listState: LazyListState) {
                 Icon(icon, contentDescription = "", tint = tint)
             }
             IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(10.dp).size(iconSize)) {
-                Icon(Icons.Outlined.FavoriteBorder, contentDescription = "", tint = tint)
+                val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_favorite)
+                Icon(icon, contentDescription = "", tint = tint)
             }
             IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(10.dp).size(iconSize)) {
                 val icon = ImageBitmap.imageResource(R.drawable.ic_dm)

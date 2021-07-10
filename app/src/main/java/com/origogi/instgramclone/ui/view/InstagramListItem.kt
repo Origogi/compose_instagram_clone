@@ -25,7 +25,9 @@ import com.origogi.instgramclone.data.Story
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.vectorResource
 import com.origogi.instgramclone.R
 
 @Composable
@@ -66,28 +68,41 @@ fun InstagramImage(imageId: Int) {
 
 @Composable
 private fun InstagramIconSection() {
-    Row {
-        var fav by remember { mutableStateOf(false) }
-        IconToggleButton(checked = fav,
-            onCheckedChange = { fav = it }) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row {
+            var fav by remember { mutableStateOf(false) }
+            IconToggleButton(checked = fav,
+                onCheckedChange = { fav = it }) {
 
-            val icon = if (fav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
-            val tint = if (fav) Color.Red else MaterialTheme.colors.onSurface
-            Icon(icon, contentDescription = "", tint = tint)
+                val icon =
+                    if (fav) ImageBitmap.imageResource(R.drawable.ic_filled_favorite) else ImageBitmap.imageResource(
+                        R.drawable.ic_outlined_favorite
+                    )
+                val tint = if (fav) Color.Red else MaterialTheme.colors.onSurface
+                Icon(icon, contentDescription = "", tint = tint)
 
-        }
-        IconToggleButton(checked = false,
-            onCheckedChange = { }) {
+            }
+            IconToggleButton(checked = false,
+                onCheckedChange = { }) {
 
-            val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_comment)
-            val tint = MaterialTheme.colors.onSurface
-            Icon(icon, contentDescription = "", tint = tint)
+                val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_comment)
+                val tint = MaterialTheme.colors.onSurface
+                Icon(icon, contentDescription = "", tint = tint)
 
+            }
+            IconToggleButton(false,
+                onCheckedChange = { }) {
+
+                val icon = ImageBitmap.imageResource(R.drawable.ic_dm)
+                val tint = MaterialTheme.colors.onSurface
+                Icon(icon, contentDescription = "", tint = tint)
+
+            }
         }
         IconToggleButton(false,
             onCheckedChange = { }) {
 
-            val icon = ImageBitmap.imageResource(R.drawable.ic_dm)
+            val icon = ImageVector.vectorResource(R.drawable.ic_outlined_bookmark)
             val tint = MaterialTheme.colors.onSurface
             Icon(icon, contentDescription = "", tint = tint)
 
@@ -145,9 +160,11 @@ fun InstagramLikeSection(post: Story) {
                 .clip(CircleShape),
             contentScale = ContentScale.Crop
         )
-        Text(text = "Liked by ${post.author} and ${post.likesCount} others",
-            style =MaterialTheme.typography.caption,
-            modifier = Modifier.padding(start = 8.dp))
+        Text(
+            text = "Liked by ${post.author} and ${post.likesCount} others",
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 8.dp)
+        )
     }
 }
 
