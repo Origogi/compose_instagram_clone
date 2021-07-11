@@ -58,7 +58,7 @@ fun AnimatedToggleButton(
         }
 
         Surface (
-            modifier = Modifier.size(animatedSize)
+            modifier = Modifier.size(animatedSize),
         ) {
             icon()
         }

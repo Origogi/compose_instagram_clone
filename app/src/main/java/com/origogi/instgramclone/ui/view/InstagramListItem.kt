@@ -1,12 +1,16 @@
 package com.origogi.instgramclone.ui.view
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
@@ -30,13 +34,79 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import com.origogi.instgramclone.R
 import com.origogi.instgramclone.ui.components.AnimatedToggleButton
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun InstagramListItem(post: Story) {
+
+    var editMessageShown by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
+
+    suspend fun showEditMessage() {
+        if (!editMessageShown) {
+            editMessageShown = true
+            delay(3000L)
+            editMessageShown = false
+        }
+    }
+
+    Column() {
+        ProfileInfoSection(post)
+        Box {
+            InstagramImage(imageId = post.storyImageId)
+            Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+                EditMessage(editMessageShown)
+
+            }
+        }
+        InstagramIconSection(post, onBookmarkClick = {
+            coroutineScope.launch {
+                showEditMessage()
+            }
+        })
+        InstagramLikeSection(post = post)
+        Text(
+            text = "View all ${post.commentsCount} comments",
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 8.dp, top = 8.dp),
+            color = Color.Gray
+        )
+        Text(
+            text = "${post.time} ago",
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 8.dp, top = 2.dp, bottom = 8.dp),
+            color = Color.Gray
+        )
+    }
+}
+
+
+@Composable
+fun InstagramListItemTest(post: Story) {
+
+    var editMessageShown by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
+
+    suspend fun showEditMessage() {
+        if (!editMessageShown) {
+            editMessageShown = true
+            delay(3000L)
+            editMessageShown = false
+        }
+    }
+
     Column() {
         ProfileInfoSection(post)
         InstagramImage(imageId = post.storyImageId)
-        InstagramIconSection(post)
+        EditMessage(editMessageShown)
+        InstagramIconSection(post, onBookmarkClick = {
+            coroutineScope.launch {
+                showEditMessage()
+            }
+        })
         InstagramLikeSection(post = post)
         Text(
             text = "View all ${post.commentsCount} comments",
@@ -68,7 +138,7 @@ fun InstagramImage(imageId: Int) {
 }
 
 @Composable
-private fun InstagramIconSection(post: Story) {
+private fun InstagramIconSection(post: Story, onBookmarkClick: () -> Unit) {
     var bookmark by remember { mutableStateOf(false) }
     var fav by remember { mutableStateOf(post.isLiked) }
 
@@ -108,8 +178,9 @@ private fun InstagramIconSection(post: Story) {
             }
         }
         AnimatedToggleButton(bookmark,
-            onCheckedChange  = {
-                bookmark= it
+            onCheckedChange = {
+                bookmark = it
+                onBookmarkClick()
             }) {
 
             val icon =
@@ -120,6 +191,39 @@ private fun InstagramIconSection(post: Story) {
 
         }
 
+    }
+}
+
+/**
+ * Shows a message that the edit feature is not available.
+ */
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+private fun EditMessage(shown: Boolean) {
+
+    AnimatedVisibility(
+        visible = shown,
+        enter = slideInVertically(
+            // Enters by sliding down from offset -fullHeight to 0.
+            initialOffsetY = { fullHeight -> fullHeight / 2 },
+            animationSpec = tween(durationMillis = 150, easing = LinearOutSlowInEasing)
+        ),
+        exit = slideOutVertically(
+            // Exits by sliding up from offset 0 to -fullHeight.
+            targetOffsetY = { fullHeight -> fullHeight },
+            animationSpec = tween(durationMillis = 250, easing = FastOutLinearInEasing)
+        )
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colors.secondary,
+            elevation = 4.dp
+        ) {
+            Text(
+                text = "테스트 메시지입니다.",
+                modifier = Modifier.padding(16.dp)
+            )
+        }
     }
 }
 
