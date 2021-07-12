@@ -1,12 +1,9 @@
 package com.origogi.instgramclone.ui.view
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -27,13 +24,18 @@ import androidx.compose.ui.unit.dp
 import com.origogi.instgramclone.data.DataDummy
 import com.origogi.instgramclone.data.Story
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.origogi.instgramclone.R
 import com.origogi.instgramclone.ui.components.AnimatedToggleButton
+import kotlinx.coroutines.NonDisposableHandle.parent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -82,7 +84,6 @@ fun InstagramListItem(post: Story) {
     }
 }
 
-
 @Composable
 fun InstagramListItemTest(post: Story) {
 
@@ -100,26 +101,33 @@ fun InstagramListItemTest(post: Story) {
 
     Column() {
         ProfileInfoSection(post)
-        InstagramImage(imageId = post.storyImageId)
-        EditMessage(editMessageShown)
-        InstagramIconSection(post, onBookmarkClick = {
-            coroutineScope.launch {
-                showEditMessage()
-            }
-        })
-        InstagramLikeSection(post = post)
-        Text(
-            text = "View all ${post.commentsCount} comments",
-            style = MaterialTheme.typography.caption,
-            modifier = Modifier.padding(start = 8.dp, top = 8.dp),
-            color = Color.Gray
-        )
-        Text(
-            text = "${post.time} ago",
-            style = MaterialTheme.typography.caption,
-            modifier = Modifier.padding(start = 8.dp, top = 2.dp, bottom = 8.dp),
-            color = Color.Gray
-        )
+        BoxWithConstraints() {
+            EditMessage(editMessageShown)
+
+            InstagramImage(imageId = post.storyImageId)
+        }
+        Column {
+            InstagramIconSection(post, onBookmarkClick = {
+                coroutineScope.launch {
+                    showEditMessage()
+                }
+            })
+            InstagramLikeSection(post = post)
+            Text(
+                text = "View all ${post.commentsCount} comments",
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier.padding(start = 8.dp, top = 8.dp),
+                color = Color.Gray
+            )
+            Text(
+                text = "${post.time} ago",
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier.padding(start = 8.dp, top = 2.dp, bottom = 8.dp),
+                color = Color.Gray
+            )
+        }
+
+
     }
 }
 
@@ -194,24 +202,19 @@ private fun InstagramIconSection(post: Story, onBookmarkClick: () -> Unit) {
     }
 }
 
-/**
- * Shows a message that the edit feature is not available.
- */
+
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun EditMessage(shown: Boolean) {
 
     AnimatedVisibility(
         visible = shown,
-        enter = slideInVertically(
-            // Enters by sliding down from offset -fullHeight to 0.
-            initialOffsetY = { fullHeight -> fullHeight / 2 },
-            animationSpec = tween(durationMillis = 150, easing = LinearOutSlowInEasing)
+        enter = expandVertically(
+            expandFrom = Alignment.Top
         ),
-        exit = slideOutVertically(
-            // Exits by sliding up from offset 0 to -fullHeight.
-            targetOffsetY = { fullHeight -> fullHeight },
-            animationSpec = tween(durationMillis = 250, easing = FastOutLinearInEasing)
+        exit = shrinkVertically(
+            shrinkTowards = Alignment.Top
         )
     ) {
         Surface(

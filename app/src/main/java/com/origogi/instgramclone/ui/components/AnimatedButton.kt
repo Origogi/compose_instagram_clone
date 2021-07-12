@@ -58,6 +58,7 @@ fun AnimatedToggleButton(
         }
 
         Surface (
+            color = Color.Transparent,
             modifier = Modifier.size(animatedSize),
         ) {
             icon()
