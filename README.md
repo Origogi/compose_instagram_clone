@@ -11,6 +11,7 @@
 ## TODO List
 
 - [x] Dark theme
+- [x] Bookmark message popup
 - [ ] Bottom Navigation
 - [ ] play movie
 
