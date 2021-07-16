@@ -233,10 +233,10 @@ private fun EditMessage(shown: Boolean, post: Story) {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
-                        painter = painterResource(id = post.authorImageId),
+                        painter = painterResource(id = post.storyImageId),
                         modifier = Modifier
                             .size(30.dp)
-                            .clip(RoundedCornerShape(5.dp)),
+                            .clip(RoundedCornerShape(4.dp)),
                         contentDescription = "",
                         contentScale = ContentScale.Crop
                     )
