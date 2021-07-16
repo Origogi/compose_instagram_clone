@@ -19,7 +19,7 @@ private val LightColorPalette = lightColors(
     secondary = Teal200,
 
     background = Color.White,
-    surface = Color.White,
+    surface = Grey100,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,

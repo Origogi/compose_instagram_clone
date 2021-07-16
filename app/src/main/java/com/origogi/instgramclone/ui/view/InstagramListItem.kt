@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -32,12 +33,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.Paragraph
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.origogi.instgramclone.R
 import com.origogi.instgramclone.ui.components.AnimatedToggleButton
+import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 import kotlinx.coroutines.NonDisposableHandle.parent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.origogi.instgramclone.ui.theme.Blue100
 
 @Composable
 fun InstagramListItem(post: Story) {
@@ -59,7 +63,7 @@ fun InstagramListItem(post: Story) {
         Box {
             InstagramImage(imageId = post.storyImageId)
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                EditMessage(editMessageShown)
+                EditMessage(editMessageShown, post = post)
 
             }
         }
@@ -102,7 +106,7 @@ fun InstagramListItemTest(post: Story) {
     Column() {
         ProfileInfoSection(post)
         BoxWithConstraints() {
-            EditMessage(editMessageShown)
+            EditMessage(editMessageShown, post)
 
             InstagramImage(imageId = post.storyImageId)
         }
@@ -203,10 +207,9 @@ private fun InstagramIconSection(post: Story, onBookmarkClick: () -> Unit) {
 }
 
 
-
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun EditMessage(shown: Boolean) {
+private fun EditMessage(shown: Boolean, post: Story) {
 
     AnimatedVisibility(
         visible = shown,
@@ -217,16 +220,40 @@ private fun EditMessage(shown: Boolean) {
             shrinkTowards = Alignment.Top
         )
     ) {
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colors.secondary,
-            elevation = 4.dp
-        ) {
-            Text(
-                text = "테스트 메시지입니다.",
-                modifier = Modifier.padding(16.dp)
-            )
+        Surface(color = MaterialTheme.colors.surface) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, bottom = 10.dp, start = 16.dp, end = 16.dp)
+            ) {
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Image(
+                        painter = painterResource(id = post.authorImageId),
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(RoundedCornerShape(5.dp)),
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(8.dp),
+                        text = "저장됨", style = MaterialTheme.typography.body2,
+                    )
+                }
+                Text(
+                    text = "컬랙션에 저장", style = MaterialTheme.typography.body2,
+                    color = Blue100
+                )
+
+            }
         }
+
     }
 }
 
@@ -284,6 +311,15 @@ fun InstagramLikeSection(post: Story) {
             style = MaterialTheme.typography.caption,
             modifier = Modifier.padding(start = 8.dp)
         )
+    }
+}
+
+@Preview
+@Composable
+fun EditMessagePreview() {
+    InstgramcloneTheme {
+        EditMessage(post = DataDummy.storyList[4], shown = true)
+
     }
 }
 
