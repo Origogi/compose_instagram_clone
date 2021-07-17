@@ -1,9 +1,6 @@
 package com.origogi.instgramclone.ui.view
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -25,20 +22,14 @@ import androidx.compose.ui.unit.dp
 import com.origogi.instgramclone.data.DataDummy
 import com.origogi.instgramclone.data.Story
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.Paragraph
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.origogi.instgramclone.R
 import com.origogi.instgramclone.ui.components.AnimatedToggleButton
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
-import kotlinx.coroutines.NonDisposableHandle.parent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.origogi.instgramclone.ui.theme.Blue100
@@ -63,7 +54,7 @@ fun InstagramListItem(post: Story) {
         Box {
             InstagramImage(imageId = post.storyImageId)
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                EditMessage(editMessageShown, post = post)
+                BookMarkMessage(editMessageShown, post = post)
 
             }
         }
@@ -167,7 +158,7 @@ private fun InstagramIconSection(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun EditMessage(shown: Boolean, post: Story) {
+private fun BookMarkMessage(shown: Boolean, post: Story) {
 
     AnimatedVisibility(
         visible = shown,
@@ -274,9 +265,9 @@ fun InstagramLikeSection(post: Story) {
 
 @Preview
 @Composable
-fun EditMessagePreview() {
+fun BookmarkMessagePreview() {
     InstgramcloneTheme {
-        EditMessage(post = DataDummy.storyList[4], shown = true)
+        BookMarkMessage(post = DataDummy.storyList[4], shown = true)
 
     }
 }
