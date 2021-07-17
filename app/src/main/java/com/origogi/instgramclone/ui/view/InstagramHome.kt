@@ -2,6 +2,7 @@ package com.origogi.instgramclone.ui.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.origogi.instgramclone.R
 import com.origogi.instgramclone.data.DataDummy
+import com.origogi.instgramclone.ui.const.icon
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 import kotlinx.coroutines.launch
 
@@ -36,7 +38,7 @@ fun InstagramHome() {
 
         val listState = rememberLazyListState()
 
-        Scaffold(topBar = { Appbar(listState) }) {
+        Scaffold(topBar = { Appbar(listState) }, bottomBar = { BottomBar() }) {
             InstagramHomeContents(listState)
         }
     }
@@ -55,15 +57,27 @@ fun Appbar(listState: LazyListState) {
     TopAppBar(
         navigationIcon = null,
         actions = {
-            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(10.dp).size(iconSize)) {
+            IconButton(
+                onClick = { /*TODO*/ }, modifier = Modifier
+                    .padding(10.dp)
+                    .size(iconSize)
+            ) {
                 val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_add)
                 Icon(icon, contentDescription = "", tint = tint)
             }
-            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(10.dp).size(iconSize)) {
+            IconButton(
+                onClick = { /*TODO*/ }, modifier = Modifier
+                    .padding(10.dp)
+                    .size(iconSize)
+            ) {
                 val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_favorite)
                 Icon(icon, contentDescription = "", tint = tint)
             }
-            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(10.dp).size(iconSize)) {
+            IconButton(
+                onClick = { /*TODO*/ }, modifier = Modifier
+                    .padding(10.dp)
+                    .size(iconSize)
+            ) {
                 val icon = ImageBitmap.imageResource(R.drawable.ic_dm)
                 Icon(icon, contentDescription = "", tint = tint)
             }
@@ -89,6 +103,40 @@ fun Appbar(listState: LazyListState) {
         )
 
 }
+
+@Composable
+fun BottomBar() {
+    val icons = listOf(
+        R.drawable.ic_outlined_add,
+        R.drawable.ic_outlined_add,
+        R.drawable.ic_outlined_add,
+        R.drawable.ic_outlined_add,
+        R.drawable.ic_outlined_add
+    )
+
+    BottomNavigation(
+        modifier = Modifier.height(50.dp),
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = contentColorFor(MaterialTheme.colors.background)
+    ) {
+        icons.forEach {
+            BottomNavigationItem(
+                icon = {
+                    Icon(
+
+                        ImageBitmap.imageResource(id = it),
+                        contentDescription = "",
+                        modifier = Modifier.icon()
+                    )
+                },
+                selected = false,
+                onClick = { },
+                alwaysShowLabel = false
+            )
+        }
+    }
+}
+
 
 @Composable
 fun InstagramHomeContents(listState: LazyListState) {
