@@ -48,7 +48,7 @@ fun InstagramListItem(post: Story) {
 
     var editMessageShown by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-
+    var bookmark by remember { mutableStateOf(false) }
 
     suspend fun showEditMessage() {
         if (!editMessageShown) {
@@ -67,10 +67,13 @@ fun InstagramListItem(post: Story) {
 
             }
         }
-        InstagramIconSection(post, onBookmarkClick = {
-            coroutineScope.launch {
-                showEditMessage()
+        InstagramIconSection(post, bookmark, onBookmarkClick = {
+            if (it) {
+                coroutineScope.launch {
+                    showEditMessage()
+                }
             }
+            bookmark = it
         })
         InstagramLikeSection(post = post)
         Text(
@@ -89,53 +92,6 @@ fun InstagramListItem(post: Story) {
 }
 
 @Composable
-fun InstagramListItemTest(post: Story) {
-
-    var editMessageShown by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
-
-
-    suspend fun showEditMessage() {
-        if (!editMessageShown) {
-            editMessageShown = true
-            delay(3000L)
-            editMessageShown = false
-        }
-    }
-
-    Column() {
-        ProfileInfoSection(post)
-        BoxWithConstraints() {
-            EditMessage(editMessageShown, post)
-
-            InstagramImage(imageId = post.storyImageId)
-        }
-        Column {
-            InstagramIconSection(post, onBookmarkClick = {
-                coroutineScope.launch {
-                    showEditMessage()
-                }
-            })
-            InstagramLikeSection(post = post)
-            Text(
-                text = "View all ${post.commentsCount} comments",
-                style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(start = 8.dp, top = 8.dp),
-                color = Color.Gray
-            )
-            Text(
-                text = "${post.time} ago",
-                style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(start = 8.dp, top = 2.dp, bottom = 8.dp),
-                color = Color.Gray
-            )
-        }
-
-
-    }
-}
-
-@Composable
 fun InstagramImage(imageId: Int) {
     if (imageId != 0) {
         Image(
@@ -150,10 +106,12 @@ fun InstagramImage(imageId: Int) {
 }
 
 @Composable
-private fun InstagramIconSection(post: Story, onBookmarkClick: () -> Unit) {
-    var bookmark by remember { mutableStateOf(false) }
+private fun InstagramIconSection(
+    post: Story,
+    bookmark: Boolean,
+    onBookmarkClick: (Boolean) -> Unit
+) {
     var fav by remember { mutableStateOf(post.isLiked) }
-
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Row {
@@ -189,10 +147,10 @@ private fun InstagramIconSection(post: Story, onBookmarkClick: () -> Unit) {
 
             }
         }
-        AnimatedToggleButton(bookmark,
+        AnimatedToggleButton(
+            bookmark,
             onCheckedChange = {
-                bookmark = it
-                onBookmarkClick()
+                onBookmarkClick(it)
             }) {
 
             val icon =
