@@ -12,8 +12,9 @@
 
 - [x] Dark theme
 - [x] Bookmark message popup
-- [ ] Bottom Navigation
-- [ ] play movie
+- [ ] Bottom Navigation bar
+- [ ] Navigator
+- [ ] Reels
 
 
 ## Reference
