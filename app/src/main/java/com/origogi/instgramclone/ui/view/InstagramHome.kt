@@ -10,8 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
@@ -21,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.origogi.instgramclone.R
 import com.origogi.instgramclone.data.DataDummy
+import com.origogi.instgramclone.ui.const.PageType
 import com.origogi.instgramclone.ui.const.icon
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 import kotlinx.coroutines.launch
@@ -79,7 +79,8 @@ fun Appbar(listState: LazyListState) {
                     coroutineScope.launch {
                         listState.animateScrollToItem(index = 0)
                     }
-                }, color = Color.Transparent) {
+                }, color = Color.Transparent
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.instagram_logo),
                     contentDescription = "",
@@ -98,31 +99,34 @@ fun Appbar(listState: LazyListState) {
 
 @Composable
 fun BottomBar() {
-    val icons = listOf(
-        R.drawable.ic_outlined_add,
-        R.drawable.ic_outlined_add,
-        R.drawable.ic_outlined_add,
-        R.drawable.ic_outlined_add,
-        R.drawable.ic_outlined_add
-    )
+    var currentPage by remember { mutableStateOf(PageType.Home) }
 
     BottomNavigation(
         modifier = Modifier.height(50.dp),
         backgroundColor = MaterialTheme.colors.background,
         contentColor = contentColorFor(MaterialTheme.colors.background)
     ) {
-        icons.forEach {
+        PageType.values().forEach {
             BottomNavigationItem(
                 icon = {
-                    Icon(
 
-                        ImageBitmap.imageResource(id = it),
+                    val iconRes = if (it == currentPage) {
+                        it.selectedIcon
+                    } else {
+                        it.icon
+                    }
+
+                    Icon(
+                        ImageBitmap.imageResource(id = iconRes),
                         contentDescription = "",
-                        modifier = Modifier.icon()
+                        modifier = Modifier.icon(),
+                        tint = MaterialTheme.colors.onSurface
                     )
                 },
                 selected = false,
-                onClick = { },
+                onClick = {
+                    currentPage = it
+                },
                 alwaysShowLabel = false
             )
         }
@@ -150,7 +154,6 @@ fun InstagramPostList(listState: LazyListState) {
         }
     }
 }
-
 
 @Preview
 @Composable

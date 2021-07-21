@@ -116,8 +116,6 @@ fun StoryListItem(
                 )
             }
         }
-
-
         Text(text = post.author, style = typography.caption, textAlign = TextAlign.Center)
     }
 
@@ -136,5 +134,5 @@ fun StoryListItemPreview() {
 @Composable
 fun InstagramStoriesPreview() {
     InstagramStories()
-
 }
+
