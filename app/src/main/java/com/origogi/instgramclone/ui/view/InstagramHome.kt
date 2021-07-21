@@ -13,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
@@ -73,11 +74,12 @@ fun Appbar(listState: LazyListState) {
             }
         },
         title = {
-            Surface(onClick = {
-                coroutineScope.launch {
-                    listState.animateScrollToItem(index = 0)
-                }
-            }) {
+            Surface(
+                onClick = {
+                    coroutineScope.launch {
+                        listState.animateScrollToItem(index = 0)
+                    }
+                }, color = Color.Transparent) {
                 Icon(
                     painter = painterResource(id = R.drawable.instagram_logo),
                     contentDescription = "",
