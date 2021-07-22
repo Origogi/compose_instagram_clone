@@ -1,22 +1,146 @@
 package com.origogi.instgramclone
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.origogi.instgramclone.ui.const.PageType
+import com.origogi.instgramclone.ui.const.icon
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 import com.origogi.instgramclone.ui.view.InstagramHome
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            InstagramHome()
+            InstagramApp()
         }
     }
+}
+
+@Composable
+fun InstagramApp() {
+    val listState = rememberLazyListState()
+    InstgramcloneTheme {
+        Scaffold(
+            topBar = { Appbar(listState) },
+            bottomBar = { BottomBar() }) {
+            InstagramHome(listState)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun Appbar(listState: LazyListState) {
+    val coroutineScope = rememberCoroutineScope()
+
+    val iconSize = 25.dp
+    val tint = MaterialTheme.colors.onSurface
+
+    TopAppBar(
+        navigationIcon = null,
+        actions = {
+            IconButton(
+                onClick = { /*TODO*/ }, modifier = Modifier
+                    .padding(10.dp)
+                    .size(iconSize)
+            ) {
+                val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_add)
+                Icon(icon, contentDescription = "", tint = tint)
+            }
+            IconButton(
+                onClick = { /*TODO*/ }, modifier = Modifier
+                    .padding(10.dp)
+                    .size(iconSize)
+            ) {
+                val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_favorite)
+                Icon(icon, contentDescription = "", tint = tint)
+            }
+            IconButton(
+                onClick = { /*TODO*/ }, modifier = Modifier
+                    .padding(10.dp)
+                    .size(iconSize)
+            ) {
+                val icon = ImageBitmap.imageResource(R.drawable.ic_dm)
+                Icon(icon, contentDescription = "", tint = tint)
+            }
+        },
+        title = {
+            Surface(
+                onClick = {
+                    coroutineScope.launch {
+                        listState.animateScrollToItem(index = 0)
+                    }
+                }, color = Color.Transparent
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.instagram_logo),
+                    contentDescription = "",
+                    tint = tint
+                )
+            }
+        },
+
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.onSurface,
+        elevation = 0.dp,
+    )
+}
+
+@Composable
+fun BottomBar() {
+    var currentPage by remember { mutableStateOf(PageType.Home) }
+
+    BottomNavigation(
+        modifier = Modifier.height(50.dp),
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = contentColorFor(MaterialTheme.colors.background)
+    ) {
+        PageType.values().forEach {
+            BottomNavigationItem(
+                icon = {
+
+                    val iconRes = if (it == currentPage) {
+                        it.selectedIcon
+                    } else {
+                        it.icon
+                    }
+
+                    Icon(
+                        ImageBitmap.imageResource(id = iconRes),
+                        contentDescription = "",
+                        modifier = Modifier.icon(),
+                        tint = MaterialTheme.colors.onSurface
+                    )
+                },
+                selected = false,
+                onClick = {
+                    currentPage = it
+                },
+                alwaysShowLabel = false
+            )
+        }
+    }
+}
+
+
+@Preview
+@Composable
+fun InstagramHomePreview() {
+    InstagramApp()
 }
