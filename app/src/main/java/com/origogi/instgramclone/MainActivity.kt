@@ -17,10 +17,17 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.origogi.instgramclone.ui.const.PageType
 import com.origogi.instgramclone.ui.const.icon
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 import com.origogi.instgramclone.ui.view.InstagramHome
+import com.origogi.instgramclone.ui.view.reels.InstagramReels
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -35,11 +42,27 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun InstagramApp() {
     val listState = rememberLazyListState()
+    val navController = rememberNavController()
+//    val backStackEntry = navController.currentBackStackEntryAsState()
+
     InstgramcloneTheme {
         Scaffold(
             topBar = { Appbar(listState) },
-            bottomBar = { BottomBar() }) {
-            InstagramHome(listState)
+            bottomBar = { BottomBar(navController = navController) }) {
+            InstagramNavHost(navController = navController, listState = listState)
+        }
+    }
+}
+
+@Composable
+fun InstagramNavHost(navController: NavHostController, listState: LazyListState) {
+    NavHost(navController = navController, startDestination = PageType.Home.name ) {
+        composable(PageType.Home.name) {
+            InstagramHome(listState = listState)
+
+        }
+        composable(PageType.Reels.name) {
+            InstagramReels()
         }
     }
 }
@@ -103,7 +126,7 @@ fun Appbar(listState: LazyListState) {
 }
 
 @Composable
-fun BottomBar() {
+fun BottomBar(navController: NavHostController) {
     var currentPage by remember { mutableStateOf(PageType.Home) }
 
     BottomNavigation(
@@ -131,6 +154,7 @@ fun BottomBar() {
                 selected = false,
                 onClick = {
                     currentPage = it
+                    navController.navigate(it.name)
                 },
                 alwaysShowLabel = false
             )

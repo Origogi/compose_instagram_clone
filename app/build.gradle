@@ -60,4 +60,6 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha08"
+    implementation "androidx.navigation:navigation-compose:2.4.0-alpha03"
+
 }
