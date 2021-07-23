@@ -12,9 +12,9 @@ enum class PageType(
     val selectedIcon: Int
 ) {
     Home(R.drawable.ic_outlined_home, R.drawable.ic_filled_home),
-    Add(R.drawable.ic_outlined_add, R.drawable.ic_outlined_add),
+    Search(R.drawable.ic_outlined_add, R.drawable.ic_outlined_add),
     Reels(R.drawable.ic_outlined_reels, R.drawable.ic_filled_reels),
-    Favorite(R.drawable.ic_outlined_favorite, R.drawable.ic_filled_favorite),
+    Shop(R.drawable.ic_outlined_favorite, R.drawable.ic_filled_favorite),
     Profile(R.drawable.ic_outlined_reels, R.drawable.ic_outlined_reels)
 }
 

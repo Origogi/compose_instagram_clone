@@ -28,6 +28,9 @@ import com.origogi.instgramclone.ui.const.icon
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 import com.origogi.instgramclone.ui.view.InstagramHome
 import com.origogi.instgramclone.ui.view.reels.InstagramReels
+import com.origogi.instgramclone.ui.view.search.InstagramProfile
+import com.origogi.instgramclone.ui.view.search.InstagramSearch
+import com.origogi.instgramclone.ui.view.shop.InstagramShop
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -63,6 +66,15 @@ fun InstagramNavHost(navController: NavHostController, listState: LazyListState)
         }
         composable(PageType.Reels.name) {
             InstagramReels()
+        }
+        composable(PageType.Search.name) {
+            InstagramSearch()
+        }
+        composable(PageType.Shop.name) {
+            InstagramShop()
+        }
+        composable(PageType.Profile.name) {
+            InstagramProfile()
         }
     }
 }
@@ -160,11 +172,4 @@ fun BottomBar(navController: NavHostController) {
             )
         }
     }
-}
-
-
-@Preview
-@Composable
-fun InstagramHomePreview() {
-    InstagramApp()
 }
