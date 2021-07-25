@@ -46,12 +46,19 @@ class MainActivity : ComponentActivity() {
 fun InstagramApp() {
     val listState = rememberLazyListState()
     val navController = rememberNavController()
-//    val backStackEntry = navController.currentBackStackEntryAsState()
+    val backStackEntry = navController.currentBackStackEntryAsState()
 
+    val currentScreen = PageType.fromRoute(
+        backStackEntry.value?.destination?.route
+    )
     InstgramcloneTheme {
         Scaffold(
-            topBar = { Appbar(listState) },
-            bottomBar = { BottomBar(navController = navController) }) {
+            topBar = {
+                if (currentScreen != PageType.Reels) {
+                    Appbar(listState)
+                }
+            },
+            bottomBar = { BottomBar(navController = navController, currentPage = currentScreen) }) {
             InstagramNavHost(navController = navController, listState = listState)
         }
     }
@@ -59,7 +66,7 @@ fun InstagramApp() {
 
 @Composable
 fun InstagramNavHost(navController: NavHostController, listState: LazyListState) {
-    NavHost(navController = navController, startDestination = PageType.Home.name ) {
+    NavHost(navController = navController, startDestination = PageType.Home.name) {
         composable(PageType.Home.name) {
             InstagramHome(listState = listState)
 
@@ -138,8 +145,7 @@ fun Appbar(listState: LazyListState) {
 }
 
 @Composable
-fun BottomBar(navController: NavHostController) {
-    var currentPage by remember { mutableStateOf(PageType.Home) }
+fun BottomBar(navController: NavHostController, currentPage: PageType) {
 
     BottomNavigation(
         modifier = Modifier.height(50.dp),
@@ -165,7 +171,6 @@ fun BottomBar(navController: NavHostController) {
                 },
                 selected = false,
                 onClick = {
-                    currentPage = it
                     navController.navigate(it.name)
                 },
                 alwaysShowLabel = false

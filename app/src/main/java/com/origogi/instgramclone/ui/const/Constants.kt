@@ -15,6 +15,20 @@ enum class PageType(
     Search(R.drawable.ic_outlined_add, R.drawable.ic_outlined_add),
     Reels(R.drawable.ic_outlined_reels, R.drawable.ic_filled_reels),
     Shop(R.drawable.ic_outlined_favorite, R.drawable.ic_filled_favorite),
-    Profile(R.drawable.ic_outlined_reels, R.drawable.ic_outlined_reels)
+    Profile(R.drawable.ic_outlined_reels, R.drawable.ic_outlined_reels);
+
+    companion object {
+        fun fromRoute(route: String?): PageType =
+            when (route?.substringBefore("/")) {
+                Home.name -> Home
+                Search.name -> Search
+                Reels.name -> Reels
+                Shop.name -> Shop
+                Profile.name -> Profile
+                null -> Home
+                else -> throw IllegalArgumentException("Route $route is not recognized.")
+            }
+    }
+
 }
 
