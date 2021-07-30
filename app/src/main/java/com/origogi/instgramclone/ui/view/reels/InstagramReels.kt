@@ -24,16 +24,23 @@ import com.origogi.instgramclone.R
 import com.origogi.instgramclone.ui.components.AnimatedToggleButton
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 
+val iconSize = 25.dp
+
 @Composable
 fun InstagramReels() {
 
-    Surface(
-        modifier = modifier
+    Box(
+        modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
         Row {
             ReelsTopbar()
+        }
+        Box (
+            modifier = Modifier.align(Alignment.BottomEnd)
+        ) {
+            VerticalButton()
         }
     }
 
@@ -41,6 +48,7 @@ fun InstagramReels() {
 
 @Composable
 fun ReelsTopbar(modifier: Modifier = Modifier) {
+
     Row(
         modifier
             .fillMaxWidth()
@@ -49,7 +57,7 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = "Reels", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold))
-        Icon(modifier= modifier.size(20.dp),
+        Icon(modifier= modifier.size(iconSize),
             painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = "")
     }
 }
@@ -69,7 +77,7 @@ fun VerticalButton() {
         modifier = Modifier.padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AnimatedToggleButton(modifier = Modifier.size(30.dp), isChecked = false, onCheckedChange = {
+        AnimatedToggleButton(modifier = Modifier.size(iconSize), isChecked = false, onCheckedChange = {
             // TODO
         }) {
             Icon(icon, tint = tint, contentDescription = "")
@@ -77,22 +85,21 @@ fun VerticalButton() {
         Text(text = "1,078")
         Spacer(modifier = Modifier.size(height = 20.dp, width = 0.dp))
         Icon(
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(iconSize),
             painter = painterResource(id = R.drawable.ic_outlined_comment),
             contentDescription = ""
         )
         Text(text = "2,685")
         Spacer(modifier = Modifier.size(height = 20.dp, width = 0.dp))
         Icon(
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(iconSize),
             painter = painterResource(id = R.drawable.ic_dm),
             contentDescription = ""
         )
         Spacer(modifier = Modifier.size(height = 30.dp, width = 0.dp))
         Icon(
-            Icons.Filled.MoreVert, contentDescription = "", modifier = Modifier.size(30.dp),
+            Icons.Filled.MoreVert, contentDescription = "", modifier = Modifier.size(iconSize),
         )
-
     }
 }
 

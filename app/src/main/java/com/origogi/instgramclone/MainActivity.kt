@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -68,8 +69,16 @@ fun InstagramApp() {
                     Appbar(listState)
                 }
             },
-            bottomBar = { BottomBar(navController = navController, currentPage = currentScreen) }) {
-            InstagramNavHost(navController = navController, listState = listState)
+            bottomBar = {
+                BottomBar(
+                    navController = navController,
+                    currentPage = currentScreen
+                )
+            }) { innerPadding ->
+
+            Box(modifier = Modifier.padding(innerPadding)) {
+                InstagramNavHost(navController = navController, listState = listState)
+            }
         }
     }
 }
