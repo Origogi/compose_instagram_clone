@@ -16,11 +16,11 @@ import com.origogi.instgramclone.R
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 
 @Composable
-fun InstagramReels(modifier: Modifier = Modifier) {
+fun InstagramReels() {
 
     Surface {
         Row {
-            ReelsTopbar(modifier)
+            ReelsTopbar()
         }
     }
 
@@ -33,7 +33,8 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(15.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
         Text(text = "Reels", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold))
-        Icon(painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = "")
+        Icon(modifier= modifier.size(20.dp),
+            painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = "")
     }
 }
 
