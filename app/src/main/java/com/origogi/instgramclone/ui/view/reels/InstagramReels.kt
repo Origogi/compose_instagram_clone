@@ -26,6 +26,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.VerticalPager
+import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -41,25 +45,35 @@ import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 
 val iconSize = 25.dp
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun InstagramReels() {
 
-    Box(
-        modifier = Modifier
+    val pagerState = rememberPagerState(
+        pageCount = 2,
+    )
+
+    VerticalPager(
+        state = pagerState, modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-    ) {
-        VideoPlayer()
-        Row {
-            ReelsTopbar()
-        }
+    ) { page ->
         Box(
-            modifier = Modifier.align(Alignment.BottomEnd)
+
         ) {
-            VerticalButton()
+            VideoPlayer(enableAutoplay = pagerState.currentPage == 0)
+
+            Box(
+                modifier = Modifier.align(Alignment.BottomEnd)
+            ) {
+                VerticalButton()
+            }
         }
     }
 
+    Row {
+        ReelsTopbar()
+    }
 }
 
 @Composable
@@ -103,14 +117,22 @@ fun VerticalButton() {
             }) {
             Icon(icon, tint = tint, contentDescription = "")
         }
-        Text(text = "1,078", modifier = Modifier.padding(top = 5.dp), style = MaterialTheme.typography.caption)
+        Text(
+            text = "1,078",
+            modifier = Modifier.padding(top = 5.dp),
+            style = MaterialTheme.typography.caption
+        )
         Spacer(modifier = Modifier.size(height = 20.dp, width = 0.dp))
         Icon(
             modifier = Modifier.size(iconSize),
             painter = painterResource(id = R.drawable.ic_outlined_comment),
             contentDescription = ""
         )
-        Text(text = "1,245", modifier = Modifier.padding(top = 5.dp), style = MaterialTheme.typography.caption)
+        Text(
+            text = "1,245",
+            modifier = Modifier.padding(top = 5.dp),
+            style = MaterialTheme.typography.caption
+        )
         Spacer(modifier = Modifier.size(height = 20.dp, width = 0.dp))
         Icon(
             modifier = Modifier.size(iconSize),
@@ -125,7 +147,10 @@ fun VerticalButton() {
 }
 
 @Composable
-fun VideoPlayer(sourceUrl : String = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4") {
+fun VideoPlayer(
+    sourceUrl: String = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    enableAutoplay: Boolean
+) {
     val context = LocalContext.current
 
     val exoPlayer = remember {
@@ -138,35 +163,41 @@ fun VideoPlayer(sourceUrl : String = "https://commondatastorage.googleapis.com/g
                 )
 
                 val source = ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(
-                        // Big Buck Bunny from Blender Project
-                        sourceUrl
-                    ))
+                    .createMediaSource(
+                        Uri.parse(
+                            sourceUrl
+                        )
+                    )
 
                 this.prepare(source)
             }
     }
 
+
     exoPlayer.playWhenReady = true
     exoPlayer.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
     exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
 
-    DisposableEffect(AndroidView(factory = {
+    AndroidView(factory = {
         PlayerView(context).apply {
             hideController()
             useController = false
             resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 
             player = exoPlayer
-            layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
         }
-    })) {
-        onDispose {
-            exoPlayer.release()
+    }, update = {
+        if (!enableAutoplay) {
+            exoPlayer.stop(true)
         }
-    }
-
+    })
 }
+
+
 
 @Composable
 @Preview
