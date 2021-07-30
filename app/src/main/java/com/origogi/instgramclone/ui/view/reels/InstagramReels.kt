@@ -37,7 +37,7 @@ fun InstagramReels() {
         Row {
             ReelsTopbar()
         }
-        Box (
+        Box(
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             VerticalButton()
@@ -57,8 +57,10 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = "Reels", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold))
-        Icon(modifier= modifier.size(iconSize),
-            painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = "")
+        Icon(
+            modifier = modifier.size(iconSize),
+            painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = ""
+        )
     }
 }
 
@@ -77,19 +79,22 @@ fun VerticalButton() {
         modifier = Modifier.padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AnimatedToggleButton(modifier = Modifier.size(iconSize), isChecked = false, onCheckedChange = {
-            // TODO
-        }) {
+        AnimatedToggleButton(
+            modifier = Modifier.size(iconSize),
+            isChecked = false,
+            onCheckedChange = {
+                // TODO
+            }) {
             Icon(icon, tint = tint, contentDescription = "")
         }
-        Text(text = "1,078")
+        Text(text = "1,078", modifier = Modifier.padding(top = 5.dp), style = MaterialTheme.typography.caption)
         Spacer(modifier = Modifier.size(height = 20.dp, width = 0.dp))
         Icon(
             modifier = Modifier.size(iconSize),
             painter = painterResource(id = R.drawable.ic_outlined_comment),
             contentDescription = ""
         )
-        Text(text = "2,685")
+        Text(text = "1,245", modifier = Modifier.padding(top = 5.dp), style = MaterialTheme.typography.caption)
         Spacer(modifier = Modifier.size(height = 20.dp, width = 0.dp))
         Icon(
             modifier = Modifier.size(iconSize),
