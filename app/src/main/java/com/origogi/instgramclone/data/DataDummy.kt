@@ -214,8 +214,29 @@ object DataDummy {
             storyImageId = R.drawable.s1,
             time = "11m"
         )
+    )
 
-
+    val reels = listOf(
+        Reel(videoUri = "asset:///food.mp4", likesCount = 3440, commentsCount = 3334),
+        Reel(videoUri = "asset:///castle.mp4", likesCount = 3440, commentsCount = 3334),
+        Reel(videoUri = "asset:///lake.mp4", likesCount = 3440, commentsCount = 3334),
+        Reel(videoUri = "asset:///icecream.mp4", likesCount = 3440, commentsCount = 3334)
     )
 
 }
+
+private val videos = listOf(
+    "food.mp4",
+    "soap-bubbles.mp4",
+    "castle.mp4",
+    "lake.mp4",
+    "icecream.mp4",
+    "soap-bubbles.mp4",
+    "castle.mp4",
+    "lake.mp4",
+    "icecream.mp4",
+    "soap-bubbles.mp4",
+    "castle.mp4",
+    "lake.mp4",
+    "icecream.mp4",
+)

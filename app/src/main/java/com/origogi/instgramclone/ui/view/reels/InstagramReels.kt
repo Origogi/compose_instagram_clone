@@ -40,17 +40,18 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.origogi.instgramclone.R
+import com.origogi.instgramclone.data.DataDummy
+import com.origogi.instgramclone.data.Reel
 import com.origogi.instgramclone.ui.components.AnimatedToggleButton
+import com.origogi.instgramclone.ui.const.icon
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
-
-val iconSize = 25.dp
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun InstagramReels() {
 
     val pagerState = rememberPagerState(
-        pageCount = 2,
+        pageCount = DataDummy.reels.size,
     )
 
     VerticalPager(
@@ -58,21 +59,28 @@ fun InstagramReels() {
             .fillMaxWidth()
             .fillMaxHeight()
     ) { page ->
-        Box(
-
-        ) {
-            VideoPlayer(enableAutoplay = pagerState.currentPage == 0)
-
-            Box(
-                modifier = Modifier.align(Alignment.BottomEnd)
-            ) {
-                VerticalButton()
-            }
-        }
+        println("KJT : " + page + "/" + currentPage)
+        ReelItem(
+            reel = DataDummy.reels[page],
+            selected = page == pagerState.currentPage
+        )
     }
 
     Row {
         ReelsTopbar()
+    }
+}
+
+@Composable
+fun ReelItem(reel: Reel, selected: Boolean) {
+    Box {
+        VideoPlayer(reel.videoUri, enableAutoplay = selected)
+
+        Box(
+            modifier = Modifier.align(Alignment.BottomEnd)
+        ) {
+            VerticalButton()
+        }
     }
 }
 
@@ -88,7 +96,7 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
     ) {
         Text(text = "Reels", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold))
         Icon(
-            modifier = modifier.size(iconSize),
+            modifier = Modifier.icon(),
             painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = ""
         )
     }
@@ -110,7 +118,7 @@ fun VerticalButton() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AnimatedToggleButton(
-            modifier = Modifier.size(iconSize),
+            modifier = Modifier.icon(),
             isChecked = false,
             onCheckedChange = {
                 // TODO
@@ -124,7 +132,7 @@ fun VerticalButton() {
         )
         Spacer(modifier = Modifier.size(height = 20.dp, width = 0.dp))
         Icon(
-            modifier = Modifier.size(iconSize),
+            modifier = Modifier.icon(),
             painter = painterResource(id = R.drawable.ic_outlined_comment),
             contentDescription = ""
         )
@@ -135,23 +143,26 @@ fun VerticalButton() {
         )
         Spacer(modifier = Modifier.size(height = 20.dp, width = 0.dp))
         Icon(
-            modifier = Modifier.size(iconSize),
+            modifier = Modifier.icon(),
             painter = painterResource(id = R.drawable.ic_dm),
             contentDescription = ""
         )
         Spacer(modifier = Modifier.size(height = 30.dp, width = 0.dp))
         Icon(
-            Icons.Filled.MoreVert, contentDescription = "", modifier = Modifier.size(iconSize),
+            Icons.Filled.MoreVert, contentDescription = "",
+            modifier = Modifier.icon(),
         )
     }
 }
 
 @Composable
 fun VideoPlayer(
-    sourceUrl: String = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    sourceUrl: String,
     enableAutoplay: Boolean
 ) {
     val context = LocalContext.current
+
+    println("KJT" + sourceUrl + "/" + enableAutoplay)
 
     val exoPlayer = remember {
         SimpleExoPlayer.Builder(context)
@@ -170,33 +181,32 @@ fun VideoPlayer(
                     )
 
                 this.prepare(source)
+                videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+                repeatMode = Player.REPEAT_MODE_ONE
             }
     }
 
+    DisposableEffect(AndroidView(modifier = Modifier
+        .fillMaxHeight()
+        .fillMaxWidth(),
+        factory = {
+            PlayerView(context).apply {
+                hideController()
+                useController = false
+                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                player = exoPlayer
 
-    exoPlayer.playWhenReady = true
-    exoPlayer.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
-    exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
-
-    AndroidView(factory = {
-        PlayerView(context).apply {
-            hideController()
-            useController = false
-            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-
-            player = exoPlayer
-            layoutParams = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+            }
+        }, update = {
+            exoPlayer.playWhenReady = enableAutoplay
+        })
+    ) {
+        onDispose {
+            println("KJT : dispose")
+            exoPlayer.release()
         }
-    }, update = {
-        if (!enableAutoplay) {
-            exoPlayer.stop(true)
-        }
-    })
+    }
 }
-
 
 
 @Composable
