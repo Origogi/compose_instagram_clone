@@ -25,7 +25,7 @@ import com.origogi.instgramclone.ui.components.AnimatedToggleButton
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 
 @Composable
-fun InstagramReels(modifier: Modifier = Modifier) {
+fun InstagramReels() {
 
     Surface(
         modifier = modifier
@@ -33,7 +33,7 @@ fun InstagramReels(modifier: Modifier = Modifier) {
             .fillMaxHeight()
     ) {
         Row {
-            ReelsTopbar(modifier)
+            ReelsTopbar()
         }
     }
 
@@ -49,7 +49,8 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = "Reels", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold))
-        Icon(painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = "")
+        Icon(modifier= modifier.size(20.dp),
+            painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = "")
     }
 }
 

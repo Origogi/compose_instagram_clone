@@ -3,6 +3,7 @@ package com.origogi.instgramclone
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -51,7 +52,16 @@ fun InstagramApp() {
     val currentScreen = PageType.fromRoute(
         backStackEntry.value?.destination?.route
     )
-    InstgramcloneTheme {
+
+    val isDarkTheme = if (currentScreen == PageType.Reels) {
+        true
+    } else {
+        isSystemInDarkTheme()
+    }
+
+    InstgramcloneTheme(
+        darkTheme = isDarkTheme
+    ) {
         Scaffold(
             topBar = {
                 if (currentScreen != PageType.Reels) {
