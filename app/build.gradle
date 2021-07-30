@@ -61,5 +61,6 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha08"
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha03"
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.7'
 
 }
