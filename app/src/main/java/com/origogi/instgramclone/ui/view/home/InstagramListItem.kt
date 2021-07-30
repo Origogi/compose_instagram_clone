@@ -104,7 +104,7 @@ private fun InstagramIconSection(
 ) {
     var fav by remember { mutableStateOf(post.isLiked) }
 
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
         Row {
 
             AnimatedToggleButton(isChecked = fav,
@@ -139,7 +139,7 @@ private fun InstagramIconSection(
             }
         }
         AnimatedToggleButton(
-            bookmark,
+            isChecked = bookmark,
             onCheckedChange = {
                 onBookmarkClick(it)
             }) {

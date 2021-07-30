@@ -31,12 +31,14 @@ import com.origogi.instgramclone.R
 @SuppressLint("UnusedTransitionTargetStateParameter")
 @Composable
 fun AnimatedToggleButton(
+    modifier: Modifier = Modifier,
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     icon: @Composable () -> Unit,
 
     ) {
     IconToggleButton(
+        modifier = modifier,
         checked = isChecked,
         onCheckedChange = { onCheckedChange(it) }
     ) {
