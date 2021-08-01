@@ -3,7 +3,13 @@ package com.origogi.instgramclone.ui.view.reels
 import android.net.Uri
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -17,8 +23,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
@@ -151,7 +159,19 @@ fun VerticalButton() {
             Icons.Filled.MoreVert, contentDescription = "",
             modifier = Modifier.icon(),
         )
-    }
+        Spacer(modifier = Modifier.size(height = 30.dp, width = 0.dp))
+
+        Image(
+            painter = painterResource(R.drawable.p2),
+            contentDescription = "avatar",
+            contentScale = ContentScale.Crop,            // crop the image if it's not a square
+            modifier = Modifier
+                .icon()
+                .clip(RoundedCornerShape(20))                       // clip to the circle shape
+                .border(2.dp, Color.White, RoundedCornerShape(20))   // add a border (optional)
+        )
+
+           }
 }
 
 @Composable
