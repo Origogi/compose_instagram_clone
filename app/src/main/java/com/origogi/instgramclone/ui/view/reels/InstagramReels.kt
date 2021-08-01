@@ -59,7 +59,6 @@ fun InstagramReels() {
             .fillMaxWidth()
             .fillMaxHeight()
     ) { page ->
-        println("KJT : " + page + "/" + currentPage)
         ReelItem(
             reel = DataDummy.reels[page],
             selected = page == pagerState.currentPage
@@ -162,8 +161,6 @@ fun VideoPlayer(
 ) {
     val context = LocalContext.current
 
-    println("KJT" + sourceUrl + "/" + enableAutoplay)
-
     val exoPlayer = remember {
         SimpleExoPlayer.Builder(context)
             .build()
@@ -202,7 +199,6 @@ fun VideoPlayer(
         })
     ) {
         onDispose {
-            println("KJT : dispose")
             exoPlayer.release()
         }
     }
