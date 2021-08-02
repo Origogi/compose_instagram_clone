@@ -1,9 +1,6 @@
 package com.origogi.instgramclone.ui.view.reels
 
 import android.net.Uri
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,10 +9,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.More
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -35,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.C
@@ -86,7 +80,7 @@ fun ReelItem(reel: Reel, selected: Boolean) {
         Box(
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {
-            VerticalButton()
+            VerticalButtons()
         }
     }
 }
@@ -110,7 +104,7 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun VerticalButton() {
+fun VerticalButtons() {
 
     val (isChecked, setChecked) = remember { mutableStateOf(false) }
 
@@ -171,7 +165,38 @@ fun VerticalButton() {
                 .border(2.dp, Color.White, RoundedCornerShape(20))   // add a border (optional)
         )
 
-           }
+    }
+}
+
+@Composable
+fun ProfileDescription() {
+    Column() {
+        Row() {
+            Image(
+                painter = painterResource(R.drawable.p2),
+                contentDescription = "avatar",
+                contentScale = ContentScale.Crop,            // crop the image if it's not a square
+                modifier = Modifier
+                    .icon()
+                    .clip(CircleShape)                       // clip to the circle shape
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                text = "hello2021", style = MaterialTheme.typography.caption
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+
+            Box(modifier = Modifier.size(2.dp).background(Color.White)) {
+
+            }
+            Spacer(modifier = Modifier.width(5.dp))
+
+            Text(
+                text = "팔로우", style = MaterialTheme.typography.caption
+            )
+
+        }
+    }
 }
 
 @Composable
@@ -224,19 +249,24 @@ fun VideoPlayer(
     }
 }
 
+@Composable
+@Preview
+fun ProfileDescriptionPreview() {
+    ProfileDescription()
+}
 
 @Composable
 @Preview
 fun VerticalButtonPreview() {
-    VerticalButton()
+    VerticalButtons()
 }
 
-@Composable
-@Preview(showBackground = true)
-fun InstagramReelsPreview() {
-
-    InstgramcloneTheme(darkTheme = true) {
-        InstagramReels()
-
-    }
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun InstagramReelsPreview() {
+//
+//    InstgramcloneTheme(darkTheme = true) {
+//        InstagramReels()
+//
+//    }
+//}
