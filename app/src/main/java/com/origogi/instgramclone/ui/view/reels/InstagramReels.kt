@@ -104,7 +104,13 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Reels", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
+        Text(
+            text = "Reels",
+            style = MaterialTheme.typography.h5.copy(
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.onSurface
+            )
+        )
         Icon(
             modifier = Modifier.icon(),
             painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = ""
@@ -118,7 +124,7 @@ fun VerticalButtons() {
     val (isChecked, setChecked) = remember { mutableStateOf(false) }
 
     val icon =
-        if (!isChecked) ImageBitmap.imageResource(R.drawable.ic_filled_favorite) else ImageBitmap.imageResource(
+        if (isChecked) ImageBitmap.imageResource(R.drawable.ic_filled_favorite) else ImageBitmap.imageResource(
             R.drawable.ic_outlined_favorite
         )
     val tint = if (isChecked) Color.Red else MaterialTheme.colors.onSurface
@@ -129,9 +135,9 @@ fun VerticalButtons() {
     ) {
         AnimatedToggleButton(
             modifier = Modifier.icon(),
-            isChecked = false,
+            isChecked = isChecked,
             onCheckedChange = {
-                // TODO
+                setChecked(it)
             }) {
             Icon(icon, tint = tint, contentDescription = "")
         }
