@@ -45,6 +45,8 @@ import com.origogi.instgramclone.R
 import com.origogi.instgramclone.data.DataDummy
 import com.origogi.instgramclone.data.Reel
 import com.origogi.instgramclone.ui.components.AnimatedToggleButton
+import com.origogi.instgramclone.ui.components.AnimatedWaveIcon
+import com.origogi.instgramclone.ui.components.Dot
 import com.origogi.instgramclone.ui.const.icon
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
 
@@ -82,6 +84,13 @@ fun ReelItem(reel: Reel, selected: Boolean) {
         ) {
             VerticalButtons()
         }
+        Box(
+            modifier = Modifier.align(Alignment.BottomStart)
+        ) {
+            ProfileDescription()
+
+        }
+
     }
 }
 
@@ -95,7 +104,7 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Reels", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold))
+        Text(text = "Reels", style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
         Icon(
             modifier = Modifier.icon(),
             painter = painterResource(id = R.drawable.ic_outlined_camera), contentDescription = ""
@@ -170,31 +179,71 @@ fun VerticalButtons() {
 
 @Composable
 fun ProfileDescription() {
-    Column() {
-        Row() {
+    Column(
+        modifier = Modifier.padding(15.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(R.drawable.p2),
                 contentDescription = "avatar",
                 contentScale = ContentScale.Crop,            // crop the image if it's not a square
                 modifier = Modifier
-                    .icon()
+                    .size(30.dp)
                     .clip(CircleShape)                       // clip to the circle shape
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                text = "hello2021", style = MaterialTheme.typography.caption
+                text = "hello2021", style = MaterialTheme.typography.subtitle2.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
             )
-            Spacer(modifier = Modifier.width(5.dp))
+            Spacer(modifier = Modifier.width(4.dp))
+            Dot()
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "팔로우", style = MaterialTheme.typography.subtitle2.copy(
+                    color = Color.White
+                )
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
 
-            Box(modifier = Modifier.size(2.dp).background(Color.White)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "가나다라마바사", style = MaterialTheme.typography.subtitle2.copy(
+                    color = Color.White
 
-            }
-            Spacer(modifier = Modifier.width(5.dp))
+                )
+            )
+            Text(
+                text = " ... 더보기",
+                style = MaterialTheme.typography.subtitle2.copy(color = Color.LightGray)
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Spacer(modifier = Modifier.width(2.dp))
+
+            AnimatedWaveIcon()
+            Spacer(modifier = Modifier.width(4.dp))
 
             Text(
-                text = "팔로우", style = MaterialTheme.typography.caption
-            )
+                text = "노래 제목 블라 블라", style = MaterialTheme.typography.subtitle2.copy(
+                    color = Color.White
 
+                )
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Dot()
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "원본 비디오", style = MaterialTheme.typography.subtitle2.copy(
+                    color = Color.White
+
+                )
+            )
         }
     }
 }
