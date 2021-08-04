@@ -12,6 +12,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SpeakerNotes
 import androidx.compose.material.icons.filled.VolumeMute
+import androidx.compose.material.icons.filled.VolumeOff
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -23,13 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.origogi.instgramclone.ui.const.icon
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun FadeInOutSpeakerIcon(showIcon: Boolean, mute: Boolean) {
-
-
 
     AnimatedVisibility(
         visible = showIcon,
@@ -43,17 +43,18 @@ fun FadeInOutSpeakerIcon(showIcon: Boolean, mute: Boolean) {
 
 @Composable
 fun SpeakerIcon(mute: Boolean) {
+    println("KJT mute : $mute"  )
     Box(
         modifier = Modifier
-            .size(30.dp)
+            .size(70.dp)
             .clip(CircleShape)
             .background(Color.Black.copy(alpha = 0.7f))
     ) {
         Icon(
-            if (mute) Icons.Filled.VolumeMute else Icons.Filled.VolumeUp,
+            if (mute) Icons.Filled.VolumeOff else Icons.Filled.VolumeUp,
             tint = Color.White,
             contentDescription = "",
-            modifier = Modifier.padding(5.dp)
+            modifier = Modifier.size(30.dp).align(Alignment.Center)
         )
     }
 }

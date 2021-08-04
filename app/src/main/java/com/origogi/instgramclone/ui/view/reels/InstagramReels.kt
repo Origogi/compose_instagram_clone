@@ -14,10 +14,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -50,8 +47,14 @@ import com.origogi.instgramclone.data.Reel
 import com.origogi.instgramclone.ui.components.AnimatedToggleButton
 import com.origogi.instgramclone.ui.components.AnimatedWaveIcon
 import com.origogi.instgramclone.ui.components.Dot
+import com.origogi.instgramclone.ui.components.FadeInOutSpeakerIcon
 import com.origogi.instgramclone.ui.const.icon
-import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+var job: Job? = null
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -61,26 +64,57 @@ fun InstagramReels() {
         pageCount = DataDummy.reels.size,
     )
 
-    VerticalPager(
-        state = pagerState, modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-    ) { page ->
-        ReelItem(
-            reel = DataDummy.reels[page],
-            selected = page == pagerState.currentPage
-        )
+    var muteState by remember {
+        mutableStateOf(false)
     }
 
-    Row {
-        ReelsTopbar()
+    var showSpeakerIconState by remember {
+        mutableStateOf(false)
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+
+
+    suspend fun changeMuteState() {
+        muteState = !muteState
+        showSpeakerIconState = true
+        delay(2000)
+        showSpeakerIconState = false
+
+    }
+    Box {
+        VerticalPager(
+            state = pagerState, modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+        ) { page ->
+            ReelItem(
+                reel = DataDummy.reels[page],
+                selected = page == pagerState.currentPage,
+                mute = muteState,
+            ) {
+                job?.cancel()
+                job = coroutineScope.launch {
+                    changeMuteState()
+                }
+            }
+        }
+
+        Row(modifier = Modifier.align(Alignment.TopCenter)) {
+            ReelsTopbar()
+        }
+
+        Box(modifier = Modifier.align(Alignment.Center)) {
+            FadeInOutSpeakerIcon(showIcon = showSpeakerIconState, mute = muteState)
+
+        }
     }
 }
 
 @Composable
-fun ReelItem(reel: Reel, selected: Boolean) {
+fun ReelItem(reel: Reel, selected: Boolean, mute: Boolean, videoClick: () -> Unit) {
     Box {
-        VideoPlayer(reel.videoUri, enableAutoplay = selected)
+        VideoPlayer(reel.videoUri, enableAutoplay = selected, mute, videoClick)
 
         Box(
             modifier = Modifier.align(Alignment.BottomEnd)
@@ -260,7 +294,9 @@ fun ProfileDescription() {
 @Composable
 fun VideoPlayer(
     sourceUrl: String,
-    enableAutoplay: Boolean
+    enableAutoplay: Boolean,
+    mute: Boolean,
+    videoClick: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -286,11 +322,12 @@ fun VideoPlayer(
             }
     }
 
+
     DisposableEffect(AndroidView(modifier = Modifier
         .fillMaxHeight()
         .fillMaxWidth()
-        .clickable {
-            println("KJT click")
+        .noRippleClickable {
+            videoClick()
         },
         factory = {
             PlayerView(context).apply {
@@ -302,6 +339,7 @@ fun VideoPlayer(
             }
         }, update = {
             exoPlayer.playWhenReady = enableAutoplay
+            exoPlayer.volume = if (mute) 0f else 1f
         })
     ) {
         onDispose {
@@ -332,7 +370,7 @@ fun VerticalButtonPreview() {
 //    }
 //}
 
-inline fun Modifier.noRippleClickable(crossinline onClick: ()->Unit): Modifier = composed {
+inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
     clickable(indication = null,
         interactionSource = remember { MutableInteractionSource() }) {
         onClick()
