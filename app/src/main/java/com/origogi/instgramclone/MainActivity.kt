@@ -1,6 +1,8 @@
 package com.origogi.instgramclone
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,10 +17,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -35,10 +39,22 @@ import com.origogi.instgramclone.ui.view.search.InstagramProfile
 import com.origogi.instgramclone.ui.view.search.InstagramSearch
 import com.origogi.instgramclone.ui.view.shop.InstagramShop
 import kotlinx.coroutines.launch
+import com.origogi.instgramclone.ui.*
+
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val decorView = window.decorView //set status background black
+
+        decorView.systemUiVisibility =
+            decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.black);
+
         setContent {
             InstagramApp()
         }
@@ -51,6 +67,9 @@ fun InstagramApp() {
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
 
+    val activity = LocalContext.current as Activity
+
+
     val currentScreen = PageType.fromRoute(
         backStackEntry.value?.destination?.route
     )
@@ -59,6 +78,19 @@ fun InstagramApp() {
         true
     } else {
         isSystemInDarkTheme()
+
+
+    }
+
+    if (currentScreen == PageType.Reels) {
+        val decorView = activity.window.decorView //set status background black
+        decorView.systemUiVisibility =
+            decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+
+        activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.black);
+    } else {
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.white);
     }
 
     InstgramcloneTheme(
