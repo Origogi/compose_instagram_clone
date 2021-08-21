@@ -217,10 +217,47 @@ object DataDummy {
     )
 
     val reels = listOf(
-        Reel(videoUri = "asset:///food.mp4", likesCount = 3440, commentsCount = 3334),
-        Reel(videoUri = "asset:///castle.mp4", likesCount = 3440, commentsCount = 3334),
-        Reel(videoUri = "asset:///lake.mp4", likesCount = 3440, commentsCount = 3334),
-        Reel(videoUri = "asset:///icecream.mp4", likesCount = 3440, commentsCount = 3334)
+        Reel(
+            videoUri = "asset:///food.mp4",
+            likesCount = 121,
+            commentsCount = 1123,
+            author = "Chrome",
+            authorImageId = R.drawable.p1,
+            description = "안녕 내 친구들~",
+            singTitle = "보랏빛 향기"
+
+        ),
+        Reel(
+            videoUri = "asset:///castle.mp4",
+            likesCount = 3434,
+            commentsCount = 342,
+            author = "Safari",
+            authorImageId = R.drawable.p2,
+            description = "Hola~",
+            singTitle = "Despacito"
+
+        ),
+        Reel(
+            videoUri = "asset:///lake.mp4",
+            likesCount = 3440,
+            commentsCount = 3334,
+            author = "Explorer",
+            authorImageId = R.drawable.p3,
+            description = "Hello~",
+            singTitle = "Chandelier"
+
+        ),
+        Reel(
+            videoUri = "asset:///icecream.mp4",
+            likesCount = 3440,
+            commentsCount = 3334,
+            author = "Firefox",
+            authorImageId = R.drawable.p4,
+            description = "Bonjure",
+            singTitle = "On Top of the World"
+
+        ),
+
     )
 
 }

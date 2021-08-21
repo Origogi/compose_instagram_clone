@@ -30,6 +30,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.android.exoplayer2.upstream.DummyDataSource
+import com.origogi.instgramclone.data.DataDummy
 import com.origogi.instgramclone.ui.const.PageType
 import com.origogi.instgramclone.ui.const.icon
 import com.origogi.instgramclone.ui.theme.InstgramcloneTheme
@@ -124,7 +126,7 @@ fun InstagramNavHost(navController: NavHostController, listState: LazyListState)
 
         }
         composable(PageType.Reels.name) {
-            InstagramReels()
+            InstagramReels(reels = DataDummy.reels)
         }
         composable(PageType.Search.name) {
             InstagramSearch()

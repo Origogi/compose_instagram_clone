@@ -21,6 +21,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
@@ -58,10 +59,10 @@ var job: Job? = null
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun InstagramReels() {
+fun InstagramReels(reels: List<Reel>) {
 
     val pagerState = rememberPagerState(
-        pageCount = DataDummy.reels.size,
+        pageCount = reels.size,
     )
 
     var muteState by remember {
@@ -87,6 +88,7 @@ fun InstagramReels() {
             state = pagerState, modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+
         ) { page ->
             ReelItem(
                 reel = DataDummy.reels[page],
@@ -119,12 +121,12 @@ fun ReelItem(reel: Reel, selected: Boolean, mute: Boolean, videoClick: () -> Uni
         Box(
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {
-            VerticalButtons()
+            VerticalButtons(reel = reel)
         }
         Box(
             modifier = Modifier.align(Alignment.BottomStart)
         ) {
-            ProfileDescription()
+            ProfileDescription(reel = reel)
 
         }
 
@@ -156,7 +158,7 @@ fun ReelsTopbar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun VerticalButtons() {
+fun VerticalButtons(reel: Reel) {
 
     val (isChecked, setChecked) = remember { mutableStateOf(false) }
 
@@ -179,7 +181,7 @@ fun VerticalButtons() {
             Icon(icon, tint = tint, contentDescription = "")
         }
         Text(
-            text = "1,078",
+            text = "%,d".format(reel.likesCount),
             modifier = Modifier.padding(top = 5.dp),
             style = MaterialTheme.typography.caption
         )
@@ -190,7 +192,7 @@ fun VerticalButtons() {
             contentDescription = ""
         )
         Text(
-            text = "1,245",
+            text = "%,d".format(reel.commentsCount),
             modifier = Modifier.padding(top = 5.dp),
             style = MaterialTheme.typography.caption
         )
@@ -208,7 +210,7 @@ fun VerticalButtons() {
         Spacer(modifier = Modifier.size(height = 30.dp, width = 0.dp))
 
         Image(
-            painter = painterResource(R.drawable.p2),
+            painter = painterResource(reel.authorImageId),
             contentDescription = "avatar",
             contentScale = ContentScale.Crop,            // crop the image if it's not a square
             modifier = Modifier
@@ -221,13 +223,13 @@ fun VerticalButtons() {
 }
 
 @Composable
-fun ProfileDescription() {
+fun ProfileDescription(reel: Reel) {
     Column(
         modifier = Modifier.padding(15.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(R.drawable.p2),
+                painter = painterResource(reel.authorImageId),
                 contentDescription = "avatar",
                 contentScale = ContentScale.Crop,            // crop the image if it's not a square
                 modifier = Modifier
@@ -236,7 +238,7 @@ fun ProfileDescription() {
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                text = "hello2021", style = MaterialTheme.typography.subtitle2.copy(
+                text = reel.author, style = MaterialTheme.typography.subtitle2.copy(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -254,7 +256,7 @@ fun ProfileDescription() {
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "가나다라마바사", style = MaterialTheme.typography.subtitle2.copy(
+                text = reel.description, style = MaterialTheme.typography.subtitle2.copy(
                     color = Color.White
 
                 )
@@ -273,10 +275,11 @@ fun ProfileDescription() {
             Spacer(modifier = Modifier.width(4.dp))
 
             Text(
-                text = "노래 제목 블라 블라", style = MaterialTheme.typography.subtitle2.copy(
+                text = reel.singTitle, style = MaterialTheme.typography.subtitle2.copy(
                     color = Color.White
 
                 )
+
             )
             Spacer(modifier = Modifier.width(4.dp))
             Dot()
@@ -351,24 +354,14 @@ fun VideoPlayer(
 @Composable
 @Preview
 fun ProfileDescriptionPreview() {
-    ProfileDescription()
+    ProfileDescription(reel = DataDummy.reels[0])
 }
 
 @Composable
 @Preview
 fun VerticalButtonPreview() {
-    VerticalButtons()
+    VerticalButtons(reel = DataDummy.reels[0])
 }
-
-//@Composable
-//@Preview(showBackground = true)
-//fun InstagramReelsPreview() {
-//
-//    InstgramcloneTheme(darkTheme = true) {
-//        InstagramReels()
-//
-//    }
-//}
 
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
     clickable(indication = null,
