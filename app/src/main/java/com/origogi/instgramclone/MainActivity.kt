@@ -99,11 +99,6 @@ fun InstagramApp() {
         darkTheme = isDarkTheme
     ) {
         Scaffold(
-            topBar = {
-                if (currentScreen != PageType.Reels) {
-                    Appbar(listState)
-                }
-            },
             bottomBar = {
                 BottomBar(
                     navController = navController,
@@ -140,63 +135,6 @@ fun InstagramNavHost(navController: NavHostController, listState: LazyListState)
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun Appbar(listState: LazyListState) {
-    val coroutineScope = rememberCoroutineScope()
-
-    val iconSize = 25.dp
-    val tint = MaterialTheme.colors.onSurface
-
-    TopAppBar(
-        navigationIcon = null,
-        actions = {
-            IconButton(
-                onClick = { /*TODO*/ }, modifier = Modifier
-                    .padding(10.dp)
-                    .size(iconSize)
-            ) {
-                val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_add)
-                Icon(icon, contentDescription = "", tint = tint)
-            }
-            IconButton(
-                onClick = { /*TODO*/ }, modifier = Modifier
-                    .padding(10.dp)
-                    .size(iconSize)
-            ) {
-                val icon = ImageBitmap.imageResource(R.drawable.ic_outlined_favorite)
-                Icon(icon, contentDescription = "", tint = tint)
-            }
-            IconButton(
-                onClick = { /*TODO*/ }, modifier = Modifier
-                    .padding(10.dp)
-                    .size(iconSize)
-            ) {
-                val icon = ImageBitmap.imageResource(R.drawable.ic_dm)
-                Icon(icon, contentDescription = "", tint = tint)
-            }
-        },
-        title = {
-            Surface(
-                onClick = {
-                    coroutineScope.launch {
-                        listState.animateScrollToItem(index = 0)
-                    }
-                }, color = Color.Transparent
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.instagram_logo),
-                    contentDescription = "",
-                    tint = tint
-                )
-            }
-        },
-
-        backgroundColor = MaterialTheme.colors.background,
-        contentColor = MaterialTheme.colors.onSurface,
-        elevation = 0.dp,
-    )
-}
 
 @Composable
 fun BottomBar(navController: NavHostController, currentPage: PageType) {
