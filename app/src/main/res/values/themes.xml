@@ -19,7 +19,4 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Instgramclone.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Instgramclone.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

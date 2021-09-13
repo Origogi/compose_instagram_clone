@@ -1,8 +1,6 @@
 package com.origogi.instgramclone.ui.view.reels
 
-import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,34 +19,20 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.util.Util
+
 import com.origogi.instgramclone.R
 import com.origogi.instgramclone.data.DataDummy
 import com.origogi.instgramclone.data.Reel
-import com.origogi.instgramclone.ui.components.AnimatedToggleButton
-import com.origogi.instgramclone.ui.components.AnimatedWaveIcon
-import com.origogi.instgramclone.ui.components.Dot
-import com.origogi.instgramclone.ui.components.FadeInOutSpeakerIcon
+import com.origogi.instgramclone.ui.components.*
 import com.origogi.instgramclone.ui.const.icon
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
@@ -116,7 +100,15 @@ fun InstagramReels(reels: List<Reel>) {
 @Composable
 fun ReelItem(reel: Reel, selected: Boolean, mute: Boolean, videoClick: () -> Unit) {
     Box {
-        VideoPlayer(reel.videoUri, enableAutoplay = selected, mute, videoClick)
+        VideoPlayer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            reel.videoUri,
+            enableAutoplay = selected,
+            mute,
+            videoClick
+        )
 
         Box(
             modifier = Modifier.align(Alignment.BottomEnd)
@@ -294,62 +286,6 @@ fun ProfileDescription(reel: Reel) {
     }
 }
 
-@Composable
-fun VideoPlayer(
-    sourceUrl: String,
-    enableAutoplay: Boolean,
-    mute: Boolean,
-    videoClick: () -> Unit
-) {
-    val context = LocalContext.current
-
-    val exoPlayer = remember {
-        SimpleExoPlayer.Builder(context)
-            .build()
-            .apply {
-                val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
-                    context,
-                    Util.getUserAgent(context, context.packageName)
-                )
-
-                val source = ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(
-                        Uri.parse(
-                            sourceUrl
-                        )
-                    )
-
-                this.prepare(source)
-                videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
-                repeatMode = Player.REPEAT_MODE_ONE
-            }
-    }
-
-
-    DisposableEffect(AndroidView(modifier = Modifier
-        .fillMaxHeight()
-        .fillMaxWidth()
-        .noRippleClickable {
-            videoClick()
-        },
-        factory = {
-            PlayerView(context).apply {
-                hideController()
-                useController = false
-                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-                player = exoPlayer
-
-            }
-        }, update = {
-            exoPlayer.playWhenReady = enableAutoplay
-            exoPlayer.volume = if (mute) 0f else 1f
-        })
-    ) {
-        onDispose {
-            exoPlayer.release()
-        }
-    }
-}
 
 @Composable
 @Preview
