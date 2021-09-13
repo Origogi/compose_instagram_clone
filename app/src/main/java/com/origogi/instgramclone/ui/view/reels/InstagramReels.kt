@@ -107,7 +107,7 @@ fun ReelItem(reel: Reel, selected: Boolean, mute: Boolean, videoClick: () -> Uni
             reel.videoUri,
             enableAutoplay = selected,
             mute,
-            videoClick
+            videoClick = videoClick
         )
 
         Box(
@@ -269,9 +269,7 @@ fun ProfileDescription(reel: Reel) {
             Text(
                 text = reel.singTitle, style = MaterialTheme.typography.subtitle2.copy(
                     color = Color.White
-
                 )
-
             )
             Spacer(modifier = Modifier.width(4.dp))
             Dot()
@@ -279,7 +277,6 @@ fun ProfileDescription(reel: Reel) {
             Text(
                 text = "원본 비디오", style = MaterialTheme.typography.subtitle2.copy(
                     color = Color.White
-
                 )
             )
         }

@@ -1,10 +1,8 @@
 package com.origogi.instgramclone.ui.view.search
 
+import android.media.MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -23,65 +21,81 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.solver.widgets.Rectangle
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.origogi.instgramclone.R
+import com.origogi.instgramclone.data.DataDummy
+import com.origogi.instgramclone.ui.components.VideoPlayer
 import com.origogi.instgramclone.ui.const.icon
+
+sealed class BaseItemData()
+
+class VideoItemData(val videoUri: String) : BaseItemData()
+class ImageItemData(val imageUri: Int) : BaseItemData()
 
 @Composable
 fun InstagramSearch() {
-
     val scrollState = rememberScrollState()
 
+    val items = listOf(
+        VideoItemData("asset:///icecream.mp4"),
+        ImageItemData(R.drawable.s1),
+        ImageItemData(R.drawable.s1),
+        ImageItemData(R.drawable.s1),
+        ImageItemData(R.drawable.s1),
+        ImageItemData(R.drawable.s1)
+    )
 
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         SearchAppbar()
-        StaggeredItem1()
-        StaggeredItem2()
-        StaggeredItem3()
-        StaggeredItem4()
+        StaggeredItem1(items)
+        StaggeredItem2(items)
+        StaggeredItem3(items)
+        StaggeredItem4(items)
     }
 }
 
 @Composable
-fun StaggeredItem1() {
+fun StaggeredItem1(itemList: List<BaseItemData>) {
     Column() {
         Row() {
-            SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
-            SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
-            SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
+            SquareItem(data = itemList[0], modifier = Modifier.weight(1f))
+            SquareItem(data = itemList[1], modifier = Modifier.weight(1f))
+            SquareItem(data = itemList[2], modifier = Modifier.weight(1f))
         }
         Row() {
-            SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
-            SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
-            SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
+            SquareItem(data = itemList[3], modifier = Modifier.weight(1f))
+            SquareItem(data = itemList[4], modifier = Modifier.weight(1f))
+            SquareItem(data = itemList[5], modifier = Modifier.weight(1f))
         }
     }
 }
 
 @Composable
-fun StaggeredItem2() {
+fun StaggeredItem2(itemList: List<BaseItemData>) {
     Row() {
-        SquareImage(id = R.drawable.s1, modifier = Modifier.weight(2f))
+        SquareItem(data = itemList[0], modifier = Modifier.weight(2f))
         Column(Modifier.weight(1f)) {
-            SquareImage(id = R.drawable.s1, modifier = Modifier)
-            SquareImage(id = R.drawable.s1, modifier = Modifier)
+            SquareItem(data = itemList[1], modifier = Modifier)
+            SquareItem(data = itemList[2], modifier = Modifier)
         }
     }
 }
 
 @Composable
-fun StaggeredItem3() {
+fun StaggeredItem3(itemList: List<BaseItemData>) {
     Row() {
-        RectangleImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
+        RectangleItem(data = itemList[0], modifier = Modifier.weight(1f))
         Column(Modifier.weight(2f)) {
             Row() {
-                SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
-                SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
+                SquareItem(data = itemList[1], modifier = Modifier.weight(1f))
+                SquareItem(data = itemList[2], modifier = Modifier.weight(1f))
 
             }
             Row() {
-                SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
-                SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
+                SquareItem(data = itemList[3], modifier = Modifier.weight(1f))
+                SquareItem(data = itemList[4], modifier = Modifier.weight(1f))
             }
         }
     }
@@ -89,46 +103,61 @@ fun StaggeredItem3() {
 
 
 @Composable
-fun StaggeredItem4() {
+fun StaggeredItem4(itemList: List<BaseItemData>) {
     Row() {
         Column(Modifier.weight(2f)) {
             Row() {
-                SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
-                SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
+                SquareItem(data = itemList[0], modifier = Modifier.weight(1f))
+                SquareItem(data = itemList[1], modifier = Modifier.weight(1f))
 
             }
             Row() {
-                SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
-                SquareImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
+                SquareItem(data = itemList[2], modifier = Modifier.weight(1f))
+                SquareItem(data = itemList[3], modifier = Modifier.weight(1f))
             }
         }
-        RectangleImage(id = R.drawable.s1, modifier = Modifier.weight(1f))
+        RectangleItem(data = itemList[4], modifier = Modifier.weight(1f))
     }
 }
 
 
 @Composable
-fun SquareImage(id : Int, modifier: Modifier) {
-    Image(
-        painter = painterResource(id = id),
-        contentDescription = "",
-        modifier = modifier
-            .aspectRatio(1f)
-            .padding(5.dp),
-        contentScale = ContentScale.Crop
-    )
+fun SquareItem(data: BaseItemData, modifier: Modifier) {
+    val itemModifier = modifier
+        .aspectRatio(1f)
+        .padding(5.dp)
+
+    Item(data = data, itemModifier)
 }
 
 @Composable
-fun RectangleImage(id : Int, modifier: Modifier) {
-    Image(
-        painter = painterResource(id = id),
-        contentDescription = "",
-        modifier = modifier
-            .aspectRatio(0.5f)
-            .padding(5.dp),
-        contentScale = ContentScale.Crop
-    )
+fun RectangleItem(data: BaseItemData, modifier: Modifier) {
+    val itemModifier = modifier
+        .aspectRatio(0.5f)
+        .padding(5.dp)
+
+
+    Item(data = data, itemModifier)
+}
+
+@Composable
+fun Item(data: BaseItemData, modifier: Modifier) {
+    when (data) {
+        is ImageItemData -> Image(
+            painter = painterResource(id = data.imageUri),
+            contentDescription = "",
+            modifier = modifier,
+            contentScale = ContentScale.Crop
+        )
+        is VideoItemData -> VideoPlayer(
+            modifier = modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            sourceUrl = data.videoUri,
+            enableAutoplay = true,
+            mute = true
+        )
+    }
 }
 
 @Composable
@@ -152,35 +181,67 @@ fun SearchAppbar() {
         }
     }
 }
-
-@Composable
-@Preview
-fun StaggeredItemOnePreview() {
-    StaggeredItem1()
-}
-
-@Composable
-@Preview
-fun StaggeredItemTwoPreview() {
-    StaggeredItem2()
-}
-
-@Composable
-@Preview
-fun StaggeredItemThreePreview() {
-    StaggeredItem3()
-}
-
-@Composable
-@Preview
-fun StaggeredItemFourPreview() {
-    StaggeredItem4()
-}
+//
+//@Composable
+//@Preview
+//fun StaggeredItemOnePreview() {
+//    val items = listOf(
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1)
+//    )
+//    StaggeredItem1(itemList = items)
+//}
+//
+//@Composable
+//@Preview
+//fun StaggeredItemTwoPreview() {
+//    val items = listOf(
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1)
+//    )
+//    StaggeredItem2(itemList = items)
+//}
+//
+//@Composable
+//@Preview
+//fun StaggeredItemThreePreview() {
+//    val items = listOf(
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1)
+//    )
+//    StaggeredItem3(itemList = items)
+//}
+//
+//@Composable
+//@Preview
+//fun StaggeredItemFourPreview() {
+//    val items = listOf(
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1),
+//        ImageItemData(R.drawable.s1)
+//    )
+//    StaggeredItem4(itemList = items)
+//}
 
 @Composable
 @Preview
 fun RectangleImageViewPreview() {
-    RectangleImage(id = R.drawable.s1, modifier = Modifier)
+    RectangleItem(data = ImageItemData(R.drawable.s1), modifier = Modifier)
 
 }
 
