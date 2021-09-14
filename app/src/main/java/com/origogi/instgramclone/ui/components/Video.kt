@@ -28,7 +28,7 @@ fun VideoPlayer(
     sourceUrl: String,
     enableAutoplay: Boolean,
     mute: Boolean,
-    resizeMode : Int = AspectRatioFrameLayout.RESIZE_MODE_FIT,
+    resizeMode : Int = AspectRatioFrameLayout.RESIZE_MODE_ZOOM,
     videoScalingMode: Int = VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING,
     videoClick: (() -> Unit)? = null
 ) {

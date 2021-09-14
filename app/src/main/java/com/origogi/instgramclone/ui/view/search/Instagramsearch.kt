@@ -38,21 +38,30 @@ class ImageItemData(val imageUri: Int) : BaseItemData()
 fun InstagramSearch() {
     val scrollState = rememberScrollState()
 
-    val items = listOf(
+    val items1 = listOf(
         VideoItemData("asset:///icecream.mp4"),
         ImageItemData(R.drawable.s1),
+        ImageItemData(R.drawable.s2),
+        ImageItemData(R.drawable.s3),
+        ImageItemData(R.drawable.s4),
+        ImageItemData(R.drawable.s5)
+    )
+
+    val items2 = listOf(
         ImageItemData(R.drawable.s1),
-        ImageItemData(R.drawable.s1),
-        ImageItemData(R.drawable.s1),
+        ImageItemData(R.drawable.s5),
+        ImageItemData(R.drawable.s4),
+        ImageItemData(R.drawable.s3),
+        VideoItemData("asset:///castle.mp4"),
         ImageItemData(R.drawable.s1)
     )
 
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         SearchAppbar()
-        StaggeredItem1(items)
-        StaggeredItem2(items)
-        StaggeredItem3(items)
-        StaggeredItem4(items)
+        StaggeredItem1(items1)
+        StaggeredItem2(items2)
+        StaggeredItem3(items1)
+        StaggeredItem4(items2)
     }
 }
 
@@ -137,11 +146,12 @@ fun RectangleItem(data: BaseItemData, modifier: Modifier) {
         .padding(5.dp)
 
 
-    Item(data = data, itemModifier)
+    Item(data = data, itemModifier, false)
 }
 
 @Composable
-fun Item(data: BaseItemData, modifier: Modifier) {
+fun Item(data: BaseItemData, modifier: Modifier, isSquare: Boolean = true) {
+
     when (data) {
         is ImageItemData -> Image(
             painter = painterResource(id = data.imageUri),
@@ -149,14 +159,15 @@ fun Item(data: BaseItemData, modifier: Modifier) {
             modifier = modifier,
             contentScale = ContentScale.Crop
         )
-        is VideoItemData -> VideoPlayer(
-            modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            sourceUrl = data.videoUri,
-            enableAutoplay = true,
-            mute = true
-        )
+        is VideoItemData ->
+
+            VideoPlayer(
+                modifier = modifier,
+                sourceUrl = data.videoUri,
+                enableAutoplay = true,
+                mute = true,
+                resizeMode = if (isSquare) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT
+            )
     }
 }
 
