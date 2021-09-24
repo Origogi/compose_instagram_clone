@@ -43,7 +43,6 @@ fun FadeInOutSpeakerIcon(showIcon: Boolean, mute: Boolean) {
 
 @Composable
 fun SpeakerIcon(mute: Boolean) {
-    println("KJT mute : $mute"  )
     Box(
         modifier = Modifier
             .size(70.dp)

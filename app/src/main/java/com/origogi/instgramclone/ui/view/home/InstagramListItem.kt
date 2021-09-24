@@ -268,7 +268,6 @@ fun InstagramLikeSection(post: Story) {
 fun BookmarkMessagePreview() {
     InstgramcloneTheme {
         BookMarkMessage(post = DataDummy.storyList[4], shown = true)
-
     }
 }
 

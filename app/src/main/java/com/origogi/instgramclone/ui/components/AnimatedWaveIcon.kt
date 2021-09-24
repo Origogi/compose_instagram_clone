@@ -33,10 +33,6 @@ fun AnimatedWaveIcon() {
     val height = v.value
     val reverseHeight = 15f - height
 
-    print("$height/$reverseHeight")
-
-
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,

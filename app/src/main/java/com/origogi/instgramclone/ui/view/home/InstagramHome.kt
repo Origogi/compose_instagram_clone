@@ -27,7 +27,6 @@ fun InstagramHome(listState: LazyListState) {
         InstagramStories()
         Divider()
         InstagramPostList(listState)
-
     }
 }
 
