@@ -36,7 +36,7 @@ import kotlin.random.Random
 sealed class BaseItemData()
 
 class VideoItemData(val videoUri: String) : BaseItemData()
-class ImageItemData(val imageUri: Int, val isMoreImage : Boolean = Random(10).nextBoolean()) : BaseItemData()
+class ImageItemData(val imageUri: Int, val isMoreImage : Boolean = false) : BaseItemData()
 
 @Composable
 fun InstagramSearch() {
@@ -44,20 +44,20 @@ fun InstagramSearch() {
 
     val items1 = listOf(
         VideoItemData("asset:///icecream.mp4"),
-        ImageItemData(R.drawable.s1),
+        ImageItemData(R.drawable.s1, true),
         ImageItemData(R.drawable.s2),
-        ImageItemData(R.drawable.s3),
+        ImageItemData(R.drawable.s3, true),
         ImageItemData(R.drawable.s4),
-        ImageItemData(R.drawable.s5)
+        ImageItemData(R.drawable.s5, true)
     )
 
     val items2 = listOf(
-        ImageItemData(R.drawable.s1),
-        ImageItemData(R.drawable.s5),
+        ImageItemData(R.drawable.s1, true),
+        ImageItemData(R.drawable.s5, true),
         ImageItemData(R.drawable.s4),
         ImageItemData(R.drawable.s3),
         VideoItemData("asset:///castle.mp4"),
-        ImageItemData(R.drawable.s1)
+        ImageItemData(R.drawable.s1, true)
     )
 
     Column(modifier = Modifier.verticalScroll(scrollState)) {
@@ -161,6 +161,7 @@ fun Item(data: BaseItemData, modifier: Modifier, isSquare: Boolean = true) {
             modifier = modifier,
         ) {
             Image(
+                modifier = modifier,
                 painter = painterResource(id = data.imageUri),
                 contentDescription = "",
                 contentScale = ContentScale.Crop
@@ -168,12 +169,11 @@ fun Item(data: BaseItemData, modifier: Modifier, isSquare: Boolean = true) {
 
             if (data.isMoreImage) {
                 Icon(
-
                     Icons.Default.ContentCopy,
                     tint = Color.White,
                     contentDescription = "",
                     modifier = Modifier
-                        .size(35.dp)
+                        .size(40.dp)
                         .align(Alignment.TopEnd)
                         .padding(10.dp)
                 )
@@ -272,7 +272,7 @@ fun SearchAppbar() {
 @Composable
 @Preview
 fun RectangleImageViewPreview() {
-    RectangleItem(data = ImageItemData(R.drawable.s1), modifier = Modifier)
+    RectangleItem(data = ImageItemData(R.drawable.s1, true), modifier = Modifier)
 
 }
 
