@@ -11,7 +11,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.VolumeOff
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,11 +31,12 @@ import com.origogi.instgramclone.R
 import com.origogi.instgramclone.data.DataDummy
 import com.origogi.instgramclone.ui.components.VideoPlayer
 import com.origogi.instgramclone.ui.const.icon
+import kotlin.random.Random
 
 sealed class BaseItemData()
 
 class VideoItemData(val videoUri: String) : BaseItemData()
-class ImageItemData(val imageUri: Int) : BaseItemData()
+class ImageItemData(val imageUri: Int, val isMoreImage : Boolean = Random(10).nextBoolean()) : BaseItemData()
 
 @Composable
 fun InstagramSearch() {
@@ -153,12 +157,28 @@ fun RectangleItem(data: BaseItemData, modifier: Modifier) {
 fun Item(data: BaseItemData, modifier: Modifier, isSquare: Boolean = true) {
 
     when (data) {
-        is ImageItemData -> Image(
-            painter = painterResource(id = data.imageUri),
-            contentDescription = "",
+        is ImageItemData -> Box(
             modifier = modifier,
-            contentScale = ContentScale.Crop
-        )
+        ) {
+            Image(
+                painter = painterResource(id = data.imageUri),
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+
+            if (data.isMoreImage) {
+                Icon(
+
+                    Icons.Default.ContentCopy,
+                    tint = Color.White,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(35.dp)
+                        .align(Alignment.TopEnd)
+                        .padding(10.dp)
+                )
+            }
+        }
         is VideoItemData ->
 
             VideoPlayer(
