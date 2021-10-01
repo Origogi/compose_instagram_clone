@@ -134,7 +134,7 @@ fun StaggeredItem4(itemList: List<BaseItemData>) {
 fun SquareItem(data: BaseItemData, modifier: Modifier) {
     val itemModifier = modifier
         .aspectRatio(1f)
-        .padding(5.dp)
+        .padding(1.dp)
 
     Item(data = data, itemModifier)
 }
@@ -143,7 +143,7 @@ fun SquareItem(data: BaseItemData, modifier: Modifier) {
 fun RectangleItem(data: BaseItemData, modifier: Modifier) {
     val itemModifier = modifier
         .aspectRatio(0.5f)
-        .padding(5.dp)
+        .padding(1.dp)
 
 
     Item(data = data, itemModifier, false)
@@ -175,7 +175,7 @@ fun Item(data: BaseItemData, modifier: Modifier, isSquare: Boolean = true) {
 fun SearchAppbar() {
     Surface(
         modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 10.dp)
             .fillMaxWidth()
             .height(50.dp)
             .clip(RoundedCornerShape(20))
